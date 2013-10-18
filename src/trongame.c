@@ -8,18 +8,14 @@
 
 #include "../includes/defines.h"
 #include "../includes/matrixcontroller.h"
+#include "../includes/rendercontroller.h"
 
 
 extern Player mainPlayer;
 
-void display() {
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glutSwapBuffers();
-    glutPostRedisplay();
-}
-
 void commonKeyPressed (unsigned char key, int x, int y) {
     printf("common: %c\n",key);
+    gluLookAt(13.0, 1000.0, 0.0, 0.0, 100.0, 0.0, 0.0, 1.0, 0.0);
 }
 
 void specialKeyPressed (int key, int x, int y) {
@@ -39,18 +35,19 @@ int main (int argc, char *argv[]) {
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
   glutInitWindowSize (640, 480);
   glutCreateWindow ("TRON Game");
-  glutDisplayFunc (&display);
+  glutDisplayFunc (display);
+  glutReshapeFunc(reshape);
 
   glutKeyboardFunc(commonKeyPressed);
   glutSpecialFunc(specialKeyPressed);
+
+  initRender();
 
   initGameMatrix();
 
   glutIdleFunc(gameStep);
 
   glutMainLoop();
-
-  glDisable (GL_TEXTURE_2D);
 
   return EXIT_SUCCESS;
 }

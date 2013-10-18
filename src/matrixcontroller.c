@@ -95,5 +95,4 @@ void initGameMatrix()
 int gameStep()
 {
     incrementElementPosition( &(mainPlayer.position), mainPlayer.direction );
-    printf("Player position: X = %d Y = %d \n", mainPlayer.position.x, mainPlayer.position.y);
 }
