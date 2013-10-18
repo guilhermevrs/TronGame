@@ -6,3 +6,6 @@ Jogo do Tron criado para a cadeira de Fundamentos de Computação Gráfica da UF
 Autores:
     Guilherme Schwade (@guilhermevrs)
     Gabriel Maschke (@maschke)
+
+Features:
+    -Controle da matriz
