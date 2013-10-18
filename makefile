@@ -1,6 +1,8 @@
 all: generate
-	./TronGame
-generate:
-	gcc -o TronGame trongame.c -lGL -lGLU -lglut -W
+	./bin/TronGame
+generate: matrixcontroller.o
+	gcc -o bin/TronGame src/trongame.c bin/matrixcontroller.o -lGL -lGLU -lglut -W
+matrixcontroller.o:
+	gcc -o bin/matrixcontroller.o -c src/matrixcontroller.c -W
 clean:
-	rm -rf *.o TronGame
+	rm -rf bin/*.o bin/TronGame
