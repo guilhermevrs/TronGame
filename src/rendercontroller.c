@@ -110,12 +110,12 @@ void renderMatrix()
     }
 }
 
-//Usado para testes de parâmetros
-void anim(int a)
+//Usado para o loop do jogo
+void animateGame(int a)
 {
     gameStep();
     glutPostRedisplay();
-    glutTimerFunc(200, anim, a);
+    glutTimerFunc(200, animateGame, a);
 }
 
 void initRender(int argc, char *argv[])
@@ -128,6 +128,6 @@ void initRender(int argc, char *argv[])
     glutDisplayFunc(display); // Tell GLUT to use the method "display" for rendering
     glutReshapeFunc(reshape);
 
-    anim(0);
+    animateGame(0);
 
 }
