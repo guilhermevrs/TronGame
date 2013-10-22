@@ -36,13 +36,37 @@ float translateColumn(unsigned char coluna)
 
 void set3rdVision()
 {
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
     float posLine = translateLine(mainPlayer.position.x);
     float posColumn = translateColumn(mainPlayer.position.y);
 
-    gluLookAt(posLine - 5.0f, PLAYER_HEIGHT + CAMERA_3RD_DISTANCE ,posColumn, posLine,PLAYER_HEIGHT,posColumn, 0,1,0);
+    float posXCamera;
+    float posZCamera;
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    switch(mainPlayer.direction)
+    {
+        case DIRECTION_RIGHT:
+        default:
+            posXCamera = posLine - 5.0f;
+            posZCamera = posColumn;
+        break;
+        case DIRECTION_DOWN:
+            posXCamera = posLine;
+            posZCamera = posColumn - 5.0f;
+        break;
+        case DIRECTION_LEFT:
+            posXCamera = posLine + 5.0f;
+            posZCamera = posColumn;
+        break;
+        case DIRECTION_UP:
+            posXCamera = posLine;
+            posZCamera = posColumn + 5.0f;
+        break;
+    }
+
+    gluLookAt(posXCamera, PLAYER_HEIGHT + CAMERA_3RD_DISTANCE ,posZCamera, posLine,PLAYER_HEIGHT,posColumn, 0,1,0);
 }
 
 void setTopVision()
