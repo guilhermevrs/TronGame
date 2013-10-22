@@ -27,6 +27,10 @@
 #define DIRECTION_RIGHT 2
 #define DIRECTION_DOWN 3
 
+//Game modes
+#define GAME_MODE_TOP 0
+#define GAME_MODE_3D 1
+
 
 
 #endif
