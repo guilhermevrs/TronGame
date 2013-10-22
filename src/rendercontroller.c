@@ -10,7 +10,7 @@ GLfloat aspect;
 */
 void display() {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    renderTerrain();
+    renderMatrix();
     glFlush();
 }
 
@@ -45,9 +45,40 @@ void reshape(GLsizei w, GLsizei h) {
 }
 
 /*
+    Render wall
+    linha = position in x
+    coluna = position in y
+*/
+void renderWall(float linha, float coluna)
+{
+    glBegin(GL_LINES);
+
+    glColor3f(1.0f,0.0f,0.0f);//wall color
+    glVertex3f(linha,0.0f,coluna);
+    glVertex3f(linha,10.0f,coluna);
+
+    glEnd();
+}
+
+/*
+    Render the player
+    linha = position in x
+    coluna = position in y
+*/
+void renderPlayer(float linha, float coluna)
+{
+    glBegin(GL_POINTS);
+
+    glColor3f(0.0f,1.0f,0.0f);//player color
+    glVertex3f(linha,0.0f,coluna);
+
+    glEnd();
+}
+
+/*
     Renders the terrain
 */
-void renderTerrain()
+void renderMatrix()
 {
     int linha, coluna;
     float linhaInc, colunaInc, posLinha, posColuna;
@@ -68,32 +99,13 @@ void renderTerrain()
     {
         for (coluna = 0; coluna < SCENE_WIDTH; ++coluna)
         {
+            posLinha = (2 * linhaInc * (float)linha) - 110.0f;
+            posColuna = (2 * colunaInc * (float)coluna) - 110.0f;
+
             if(globalMatrix[linha][coluna] == GAME_WALL) //IS WALL?
-            {
-                 posLinha = (linhaInc * (float)linha) - 110.0f;
-                 posColuna = (colunaInc * (float)coluna) - 110.0f;
-
-                glBegin(GL_LINES);
-
-                glColor3f(1.0f,0.0f,0.0f);//wall color
-                glVertex3f(posLinha,0.0f,posColuna);
-                glVertex3f(posLinha,10.0f,posColuna);
-
-                glEnd();
-            }
-
-             if(globalMatrix[linha][coluna] == GAME_PLAYER) //IS WALL?
-            {
-                 posLinha = (linhaInc * (float)linha) - 110.0f;
-                 posColuna = (colunaInc * (float)coluna) - 110.0f;
-
-                glBegin(GL_POINTS);
-
-                glColor3f(0.0f,1.0f,0.0f);//player color
-                glVertex3f(posLinha,0.0f,posColuna);
-
-                glEnd();
-            }
+                renderWall(posLinha, posColuna);
+             else if(globalMatrix[linha][coluna] == GAME_PLAYER) //IS PLAYER?
+                renderPlayer(posLinha, posColuna);
         }
     }
 }
