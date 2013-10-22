@@ -31,23 +31,12 @@ void specialKeyPressed (int key, int x, int y) {
 
 int main (int argc, char *argv[]) {
 
-  glutInit (&argc, argv);
-  glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
-  glutInitWindowSize (640, 480);
-  glutCreateWindow ("TRON Game");
-  glutDisplayFunc (display);
-  glutReshapeFunc(reshape);
+initRender(argc, argv);
 
-  glutKeyboardFunc(commonKeyPressed);
-  glutSpecialFunc(specialKeyPressed);
+glutKeyboardFunc(commonKeyPressed);
+glutKeyboardUpFunc(specialKeyPressed);
 
-  initRender();
-
-  initGameMatrix();
-
-  glutIdleFunc(gameStep);
-
-  glutMainLoop();
+glutMainLoop();
 
   return EXIT_SUCCESS;
 }
