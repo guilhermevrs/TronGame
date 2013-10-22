@@ -8,49 +8,71 @@
 
 #include "../includes/defines.h"
 #include "../includes/matrixcontroller.h"
-
+#include "../includes/rendercontroller.h"
 
 extern Player mainPlayer;
+unsigned char gameMode;
 
-void display() {
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glutSwapBuffers();
-    glutPostRedisplay();
-}
 
 void commonKeyPressed (unsigned char key, int x, int y) {
-    printf("common: %c\n",key);
+    if(key == 'v' || key == 'V')
+    {
+        if(gameMode == GAME_MODE_TOP)
+            gameMode = GAME_MODE_3D;
+        else
+            gameMode = GAME_MODE_TOP;
+    }
 }
 
 void specialKeyPressed (int key, int x, int y) {
-    switch(key)
+    if(gameMode == GAME_MODE_TOP)
     {
-        case KEY_LEFT: mainPlayer.direction = DIRECTION_LEFT;   break;
-        case KEY_UP: mainPlayer.direction = DIRECTION_UP;   break;
-        case KEY_RIGHT: mainPlayer.direction = DIRECTION_RIGHT;   break;
-        case KEY_DOWN: mainPlayer.direction = DIRECTION_DOWN;  break;
-        default: break;
+        switch(key)
+        {
+            case KEY_LEFT: mainPlayer.direction = DIRECTION_LEFT;   break;
+            case KEY_UP: mainPlayer.direction = DIRECTION_UP;   break;
+            case KEY_RIGHT: mainPlayer.direction = DIRECTION_RIGHT;   break;
+            case KEY_DOWN: mainPlayer.direction = DIRECTION_DOWN;  break;
+            default: break;
+        }
+    }
+    else
+    {
+        if(key == KEY_RIGHT)
+        {
+            switch(mainPlayer.direction)
+            {
+                case DIRECTION_LEFT: mainPlayer.direction = DIRECTION_UP;   break;
+                case DIRECTION_UP: mainPlayer.direction = DIRECTION_RIGHT;   break;
+                case DIRECTION_RIGHT: mainPlayer.direction = DIRECTION_DOWN;   break;
+                case DIRECTION_DOWN: mainPlayer.direction = DIRECTION_LEFT;  break;
+                default: break;
+            }
+        }
+        else if(key == KEY_LEFT)
+        {
+            switch(mainPlayer.direction)
+            {
+                case DIRECTION_LEFT: mainPlayer.direction = DIRECTION_DOWN;   break;
+                case DIRECTION_UP: mainPlayer.direction = DIRECTION_LEFT;   break;
+                case DIRECTION_RIGHT: mainPlayer.direction = DIRECTION_UP;   break;
+                case DIRECTION_DOWN: mainPlayer.direction = DIRECTION_RIGHT;  break;
+                default: break;
+            }
+        }
     }
 }
 
 int main (int argc, char *argv[]) {
 
-  glutInit (&argc, argv);
-  glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
-  glutInitWindowSize (640, 480);
-  glutCreateWindow ("TRON Game");
-  glutDisplayFunc (&display);
+    gameMode = GAME_MODE_TOP;
+    initGameMatrix();
 
-  glutKeyboardFunc(commonKeyPressed);
-  glutSpecialFunc(specialKeyPressed);
+    initRender(argc, argv);
+    glutKeyboardFunc(commonKeyPressed);
+    glutSpecialFunc(specialKeyPressed);
 
-  initGameMatrix();
+    glutMainLoop();
 
-  glutIdleFunc(gameStep);
-
-  glutMainLoop();
-
-  glDisable (GL_TEXTURE_2D);
-
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }

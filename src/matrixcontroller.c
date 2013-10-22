@@ -90,6 +90,19 @@ void initGameMatrix()
     mainPlayer.position.y = 0;
     mainPlayer.direction = DIRECTION_RIGHT;
     globalMatrix[0][0] = GAME_PLAYER;
+
+    for (i = 12; i < 20; ++i)
+    {
+        for (j = 4; j < 6; ++j)
+        {
+            globalMatrix[i][j] = GAME_WALL;
+        }
+
+        for (j = 15; j < 20; ++j)
+        {
+            globalMatrix[i][j] = GAME_WALL;
+        }
+    }
 }
 
 /*
@@ -111,13 +124,19 @@ int isStepOk()
 
 int gameStep()
 {
+
     int step;
 
     incrementElementPosition( &(mainPlayer.position), mainPlayer.direction );
     printf("Player position: X = %d Y = %d \n", mainPlayer.position.x, mainPlayer.position.y);
     printf("Step: %d \n",isStepOk());
 
-    step = isStepOk();
+    //step = isStepOk();
 
-    return step;
+    //return step;
+
+    globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_SPACE;
+    incrementElementPosition( &(mainPlayer.position), mainPlayer.direction );
+    globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_PLAYER;
+
 }
