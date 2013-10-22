@@ -27,9 +27,19 @@
 #define DIRECTION_RIGHT 2
 #define DIRECTION_DOWN 3
 
+//Player parameters
+#define PLAYER_HEIGHT 5.0f
+
+//Wall parameters
+#define WALL_HEIGHT 10.0f
+
 //Game modes
 #define GAME_MODE_TOP 0
 #define GAME_MODE_3D 1
+
+//Camera paramenters
+#define CAMERA_3RD_DISTANCE 2.0f
+
 
 
 
