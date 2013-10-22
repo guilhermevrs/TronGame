@@ -10,12 +10,10 @@
 #include "../includes/matrixcontroller.h"
 #include "../includes/rendercontroller.h"
 
-
 extern Player mainPlayer;
 
 void commonKeyPressed (unsigned char key, int x, int y) {
     printf("common: %c\n",key);
-    gluLookAt(13.0, 1000.0, 0.0, 0.0, 100.0, 0.0, 0.0, 1.0, 0.0);
 }
 
 void specialKeyPressed (int key, int x, int y) {
@@ -31,12 +29,13 @@ void specialKeyPressed (int key, int x, int y) {
 
 int main (int argc, char *argv[]) {
 
-initRender(argc, argv);
+    initGameMatrix();
 
-glutKeyboardFunc(commonKeyPressed);
-glutKeyboardUpFunc(specialKeyPressed);
+    initRender(argc, argv);
+    glutKeyboardFunc(commonKeyPressed);
+    glutSpecialFunc(specialKeyPressed);
 
-glutMainLoop();
+    glutMainLoop();
 
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }

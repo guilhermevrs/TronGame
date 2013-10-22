@@ -90,9 +90,24 @@ void initGameMatrix()
     mainPlayer.position.y = 0;
     mainPlayer.direction = DIRECTION_RIGHT;
     globalMatrix[0][0] = GAME_PLAYER;
+
+    for (i = 12; i < 20; ++i)
+    {
+        for (j = 4; j < 6; ++j)
+        {
+            globalMatrix[i][j] = GAME_WALL;
+        }
+
+        for (j = 15; j < 20; ++j)
+        {
+            globalMatrix[i][j] = GAME_WALL;
+        }
+    }
 }
 
 int gameStep()
 {
+    globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_SPACE;
     incrementElementPosition( &(mainPlayer.position), mainPlayer.direction );
+    globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_PLAYER;
 }

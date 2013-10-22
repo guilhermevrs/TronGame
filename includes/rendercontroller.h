@@ -5,6 +5,9 @@
 #include <GL/gl.h> // OpenGL - for rendering 3D graphics
 #include <GL/glu.h> // OpenGL Utility Library - extra features built atop of GL
 
+#include "matrixcontroller.h"
+#include "defines.h"
+
 /*
     Initialize Rendercontroller
 */
