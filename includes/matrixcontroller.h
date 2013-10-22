@@ -23,7 +23,8 @@ void initGameMatrix();
     val = value required by opengl (can be 0)
 
     Returns:   STEP_OK - Everything fine
-                    STEP_COLLISION - Player colided
+                    STEP_COLLISION_WALL - Player collided
+                    STEP_COLLISION_ENEMY - Player and enemy collided
 */
 int gameStep();
 

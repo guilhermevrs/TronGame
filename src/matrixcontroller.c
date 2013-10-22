@@ -92,8 +92,32 @@ void initGameMatrix()
     globalMatrix[0][0] = GAME_PLAYER;
 }
 
+/*
+    Checks if happened a collision
+*/
+int isStepOk()
+{
+    int matrixPosition = globalMatrix[mainPlayer.position.x][mainPlayer.position.y];
+    int result;
+    if(matrixPosition == GAME_WALL)
+        result = STEP_COLLISION_WALL;
+    else
+        if(matrixPosition == GAME_ENEMY)
+            result = STEP_COLLISION_ENEMY;
+        else
+            result = STEP_OK;
+    return result;
+}
+
 int gameStep()
 {
+    int step;
+
     incrementElementPosition( &(mainPlayer.position), mainPlayer.direction );
     printf("Player position: X = %d Y = %d \n", mainPlayer.position.x, mainPlayer.position.y);
+    printf("Step: %d \n",isStepOk());
+
+    step = isStepOk();
+
+    return step;
 }

@@ -13,13 +13,14 @@
 
 //Objects in game matrix
 #define GAME_SPACE   0
-#define GAME_WALL 1
+#define GAME_WALL 1 
 #define GAME_PLAYER 2
 #define GAME_ENEMY 3
 
 //Returns of the matrixcontroller
 #define STEP_OK 0
-#define STEP_COLLISION 1
+#define STEP_COLLISION_WALL 1
+#define STEP_COLLISION_ENEMY 2
 
 //Directions of elements in game
 #define DIRECTION_LEFT 0
