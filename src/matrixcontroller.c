@@ -116,12 +116,16 @@ int isStepOk()
     {
         case GAME_WALL:
             result = STEP_COLLISION_WALL;
+        break;
         case GAME_ENEMY:
             result = STEP_COLLISION_ENEMY;
+        break;
         case GAME_TRAIL:
             result = STEP_COLLISION_TRAIL;
+        break;
         default:
             result = STEP_OK;
+        break;
     }
     return result;
 }
