@@ -112,13 +112,17 @@ int isStepOk()
 {
     int matrixPosition = globalMatrix[mainPlayer.position.x][mainPlayer.position.y];
     int result;
-    if(matrixPosition == GAME_WALL)
-        result = STEP_COLLISION_WALL;
-    else
-        if(matrixPosition == GAME_ENEMY)
+    switch(matrixPosition)
+    {
+        case GAME_WALL:
+            result = STEP_COLLISION_WALL;
+        case GAME_ENEMY:
             result = STEP_COLLISION_ENEMY;
-        else
+        case GAME_TRAIL:
+            result = STEP_COLLISION_TRAIL;
+        default:
             result = STEP_OK;
+    }
     return result;
 }
 
@@ -131,12 +135,11 @@ int gameStep()
     printf("Player position: X = %d Y = %d \n", mainPlayer.position.x, mainPlayer.position.y);
     printf("Step: %d \n",isStepOk());
 
-    //step = isStepOk();
-
-    //return step;
+    step = isStepOk();
 
     globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_SPACE;
     incrementElementPosition( &(mainPlayer.position), mainPlayer.direction );
     globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_PLAYER;
 
+    return step;
 }
