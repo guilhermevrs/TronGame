@@ -11,6 +11,7 @@
 #include "../includes/rendercontroller.h"
 
 extern Player mainPlayer;
+extern int stopGame;
 unsigned char gameMode;
 
 
@@ -21,6 +22,13 @@ void commonKeyPressed (unsigned char key, int x, int y) {
             gameMode = GAME_MODE_3D;
         else
             gameMode = GAME_MODE_TOP;
+    }
+    else
+    {
+        if(key == 's' || key == 'S')
+            stopGame = 1;
+        else
+            stopGame = 0;
     }
 }
 

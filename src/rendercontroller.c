@@ -3,6 +3,7 @@
 extern char globalMatrix[SCENE_HEIGHT][SCENE_WIDTH];
 extern Player mainPlayer;
 extern unsigned char gameMode;
+int stopGame;
 GLfloat aspect;
 
 /*
@@ -12,6 +13,7 @@ void display() {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     renderMatrix();
     glFlush();
+    glutSwapBuffers();
 }
 
 /*
@@ -112,12 +114,63 @@ void reshape(GLsizei w, GLsizei h) {
 */
 void renderWall(float linha, float coluna)
 {
-    glBegin(GL_LINES);
 
-    glColor3f(1.0f,0.0f,0.0f);//wall color
-    glVertex3f(linha,0.0f,coluna);
-    glVertex3f(linha,WALL_HEIGHT,coluna);
+    float linhaInc = 110.0f/((float)SCENE_HEIGHT);
+    float colunaInc = 110.0f/((float)SCENE_WIDTH);
+    float linhaNeg = linha - linhaInc;
+    float linhaPos = linha + linhaInc;
+    float colunaNeg = coluna - colunaInc;
+    float colunaPos = coluna + colunaInc;
 
+    glBegin(GL_POLYGON);
+
+    glColor3f( 1.0,  1.0, 1.0 );
+    glVertex3f(  linhaPos, 0.1, colunaNeg );
+    glVertex3f(  linhaPos,  WALL_HEIGHT, colunaNeg );
+    glVertex3f( linhaNeg,  WALL_HEIGHT, colunaNeg );
+    glVertex3f( linhaNeg, 0.1, colunaNeg );
+
+    glEnd();
+
+    // BACK
+    glBegin(GL_POLYGON);
+    glVertex3f(  linhaPos, 0.1f, colunaPos );
+    glVertex3f(  linhaPos,  WALL_HEIGHT, colunaPos );
+    glVertex3f( linhaNeg,  WALL_HEIGHT, colunaPos );
+    glVertex3f( linhaNeg, 0.1f, colunaPos );
+    glEnd();
+
+    // RIGHT
+    glBegin(GL_POLYGON);
+    glVertex3f( linhaPos, 0.1f, colunaNeg );
+    glVertex3f( linhaPos,  WALL_HEIGHT, colunaNeg );
+    glVertex3f( linhaPos,  WALL_HEIGHT,  colunaPos );
+    glVertex3f( linhaPos, 0.1f,  colunaPos );
+    glEnd();
+
+    // LEFT
+    glBegin(GL_POLYGON);
+    glVertex3f( linhaNeg, 0.1f,  colunaPos );
+    glVertex3f( linhaNeg,  WALL_HEIGHT,  colunaPos );
+    glVertex3f( linhaNeg,  WALL_HEIGHT, colunaNeg );
+    glVertex3f( linhaNeg, 0.1f, colunaNeg );
+    glEnd();
+
+    // TOP
+    glBegin(GL_POLYGON);
+    glColor3f( 1.0,  0.0, 0.0 );
+    glVertex3f(  linhaPos,  WALL_HEIGHT,  colunaPos );
+    glVertex3f(  linhaPos,  WALL_HEIGHT, colunaNeg );
+    glVertex3f( linhaNeg,  WALL_HEIGHT, colunaNeg );
+    glVertex3f( linhaNeg,  WALL_HEIGHT,  colunaPos );
+    glEnd();
+
+    // BOTTOM
+    glBegin(GL_POLYGON);
+    glVertex3f(  linhaPos, 0.1f, colunaNeg );
+    glVertex3f(  linhaPos, 0.1f,  colunaPos );
+    glVertex3f( linhaNeg, 0.1f,  colunaPos );
+    glVertex3f( linhaNeg, 0.1f, colunaNeg );
     glEnd();
 }
 
@@ -172,7 +225,8 @@ void renderMatrix()
 //Usado para o loop do jogo
 void animateGame(int a)
 {
-    gameStep();
+    if(stopGame != 1)
+        gameStep();
     if(gameMode == GAME_MODE_3D)
         set3rdVision();
     else
@@ -184,9 +238,11 @@ void animateGame(int a)
 void initRender(int argc, char *argv[])
 {
     glutInit(&argc, argv);
-    glutInitDisplayMode (GLUT_SINGLE);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize (640, 480);
     glutCreateWindow ("TronGame");
+
+    glEnable(GL_DEPTH_TEST);
 
     glutDisplayFunc(display); // Tell GLUT to use the method "display" for rendering
     glutReshapeFunc(reshape);
