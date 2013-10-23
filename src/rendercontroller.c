@@ -126,6 +126,7 @@ void renderWall(float linha, float coluna)
 
     glColor3f(0.7372f, 0.8666f, 0.9882f);
     glBindTexture(GL_TEXTURE_2D, textureWallID);
+    //FRONT
     glBegin(GL_POLYGON);
 
     glTexCoord2f (0.0, 0.0);
@@ -141,49 +142,49 @@ void renderWall(float linha, float coluna)
 
     // BACK
     glBegin(GL_POLYGON);
-    glTexCoord2f (0.0, 0.0);
-    glVertex3f(  linhaPos, 0.1f, colunaPos );
-    glTexCoord2f (1.0, 0.0);
-    glVertex3f(  linhaPos,  WALL_HEIGHT, colunaPos );
     glTexCoord2f (1.0, 1.0);
-    glVertex3f( linhaNeg,  WALL_HEIGHT, colunaPos );
+    glVertex3f(  linhaPos, 0.1f, colunaPos );
     glTexCoord2f (0.0, 1.0);
+    glVertex3f(  linhaPos,  WALL_HEIGHT, colunaPos );
+    glTexCoord2f (0.0, 0.0);
+    glVertex3f( linhaNeg,  WALL_HEIGHT, colunaPos );
+    glTexCoord2f (1.0, 0.0);
     glVertex3f( linhaNeg, 0.1f, colunaPos );
     glEnd();
 
     // RIGHT
     glBegin(GL_POLYGON);
-    glTexCoord2f (0.0, 0.0);
-    glVertex3f( linhaPos, 0.1f, colunaNeg );
     glTexCoord2f (1.0, 0.0);
-    glVertex3f( linhaPos,  WALL_HEIGHT, colunaNeg );
-    glTexCoord2f (1.0, 1.0);
-    glVertex3f( linhaPos,  WALL_HEIGHT,  colunaPos );
+    glVertex3f( linhaPos, 0.1f, colunaNeg );
     glTexCoord2f (0.0, 1.0);
+    glVertex3f( linhaPos,  WALL_HEIGHT, colunaNeg );
+    glTexCoord2f (0.0, 0.0);
+    glVertex3f( linhaPos,  WALL_HEIGHT,  colunaPos );
+    glTexCoord2f (1.0, 1.0);
     glVertex3f( linhaPos, 0.1f,  colunaPos );
     glEnd();
 
     // LEFT
     glBegin(GL_POLYGON);
-    glTexCoord2f (0.0, 0.0);
-    glVertex3f( linhaNeg, 0.1f,  colunaPos );
-    glTexCoord2f (1.0, 0.0);
-    glVertex3f( linhaNeg,  WALL_HEIGHT,  colunaPos );
     glTexCoord2f (1.0, 1.0);
-    glVertex3f( linhaNeg,  WALL_HEIGHT, colunaNeg );
+    glVertex3f( linhaNeg, 0.1f,  colunaPos );
+    glTexCoord2f (0.0, 0.0);
+    glVertex3f( linhaNeg,  WALL_HEIGHT,  colunaPos );
     glTexCoord2f (0.0, 1.0);
+    glVertex3f( linhaNeg,  WALL_HEIGHT, colunaNeg );
+    glTexCoord2f (1.0, 0.0);
     glVertex3f( linhaNeg, 0.1f, colunaNeg );
     glEnd();
 
     // TOP
     glBegin(GL_POLYGON);
-    glTexCoord2f (0.0, 0.0);
-    glVertex3f(  linhaPos,  WALL_HEIGHT,  colunaPos );
-    glTexCoord2f (1.0, 0.0);
-    glVertex3f(  linhaPos,  WALL_HEIGHT, colunaNeg );
-    glTexCoord2f (1.0, 1.0);
-    glVertex3f( linhaNeg,  WALL_HEIGHT, colunaNeg );
     glTexCoord2f (0.0, 1.0);
+    glVertex3f(  linhaPos,  WALL_HEIGHT,  colunaPos );
+    glTexCoord2f (1.0, 1.0);
+    glVertex3f(  linhaPos,  WALL_HEIGHT, colunaNeg );
+    glTexCoord2f (0.0, 0.0);
+    glVertex3f( linhaNeg,  WALL_HEIGHT, colunaNeg );
+    glTexCoord2f (1.0, 0.0);
     glVertex3f( linhaNeg,  WALL_HEIGHT,  colunaPos );
     glEnd();
 
@@ -193,9 +194,9 @@ void renderWall(float linha, float coluna)
     glVertex3f(  linhaPos, 0.1f, colunaNeg );
     glTexCoord2f (1.0, 0.0);
     glVertex3f(  linhaPos, 0.1f,  colunaPos );
-    glTexCoord2f (1.0, 1.0);
-    glVertex3f( linhaNeg, 0.1f,  colunaPos );
     glTexCoord2f (0.0, 1.0);
+    glVertex3f( linhaNeg, 0.1f,  colunaPos );
+    glTexCoord2f (1.0, 1.0);
     glVertex3f( linhaNeg, 0.1f, colunaNeg );
     glEnd();
 }
