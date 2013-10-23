@@ -5,6 +5,7 @@ extern Player mainPlayer;
 extern unsigned char gameMode;
 int stopGame;
 GLfloat aspect;
+GLuint textureWallID;
 
 /*
     Display function for opengl
@@ -122,54 +123,79 @@ void renderWall(float linha, float coluna)
     float colunaNeg = coluna - colunaInc;
     float colunaPos = coluna + colunaInc;
 
+
+    glColor3f(0.7372f, 0.8666f, 0.9882f);
+    glBindTexture(GL_TEXTURE_2D, textureWallID);
     glBegin(GL_POLYGON);
 
-    glColor3f( 1.0,  1.0, 1.0 );
+    glTexCoord2f (0.0, 0.0);
     glVertex3f(  linhaPos, 0.1, colunaNeg );
+    glTexCoord2f (1.0, 0.0);
     glVertex3f(  linhaPos,  WALL_HEIGHT, colunaNeg );
+    glTexCoord2f (1.0, 1.0);
     glVertex3f( linhaNeg,  WALL_HEIGHT, colunaNeg );
+    glTexCoord2f (0.0, 1.0);
     glVertex3f( linhaNeg, 0.1, colunaNeg );
 
     glEnd();
 
     // BACK
     glBegin(GL_POLYGON);
+    glTexCoord2f (0.0, 0.0);
     glVertex3f(  linhaPos, 0.1f, colunaPos );
+    glTexCoord2f (1.0, 0.0);
     glVertex3f(  linhaPos,  WALL_HEIGHT, colunaPos );
+    glTexCoord2f (1.0, 1.0);
     glVertex3f( linhaNeg,  WALL_HEIGHT, colunaPos );
+    glTexCoord2f (0.0, 1.0);
     glVertex3f( linhaNeg, 0.1f, colunaPos );
     glEnd();
 
     // RIGHT
     glBegin(GL_POLYGON);
+    glTexCoord2f (0.0, 0.0);
     glVertex3f( linhaPos, 0.1f, colunaNeg );
+    glTexCoord2f (1.0, 0.0);
     glVertex3f( linhaPos,  WALL_HEIGHT, colunaNeg );
+    glTexCoord2f (1.0, 1.0);
     glVertex3f( linhaPos,  WALL_HEIGHT,  colunaPos );
+    glTexCoord2f (0.0, 1.0);
     glVertex3f( linhaPos, 0.1f,  colunaPos );
     glEnd();
 
     // LEFT
     glBegin(GL_POLYGON);
+    glTexCoord2f (0.0, 0.0);
     glVertex3f( linhaNeg, 0.1f,  colunaPos );
+    glTexCoord2f (1.0, 0.0);
     glVertex3f( linhaNeg,  WALL_HEIGHT,  colunaPos );
+    glTexCoord2f (1.0, 1.0);
     glVertex3f( linhaNeg,  WALL_HEIGHT, colunaNeg );
+    glTexCoord2f (0.0, 1.0);
     glVertex3f( linhaNeg, 0.1f, colunaNeg );
     glEnd();
 
     // TOP
     glBegin(GL_POLYGON);
-    glColor3f( 1.0,  0.0, 0.0 );
+    glTexCoord2f (0.0, 0.0);
     glVertex3f(  linhaPos,  WALL_HEIGHT,  colunaPos );
+    glTexCoord2f (1.0, 0.0);
     glVertex3f(  linhaPos,  WALL_HEIGHT, colunaNeg );
+    glTexCoord2f (1.0, 1.0);
     glVertex3f( linhaNeg,  WALL_HEIGHT, colunaNeg );
+    glTexCoord2f (0.0, 1.0);
     glVertex3f( linhaNeg,  WALL_HEIGHT,  colunaPos );
     glEnd();
 
     // BOTTOM
     glBegin(GL_POLYGON);
+    glTexCoord2f (0.0, 0.0);
     glVertex3f(  linhaPos, 0.1f, colunaNeg );
+    glTexCoord2f (1.0, 0.0);
     glVertex3f(  linhaPos, 0.1f,  colunaPos );
+    glTexCoord2f (1.0, 1.0);
     glVertex3f( linhaNeg, 0.1f,  colunaPos );
+    glTexCoord2f (0.0, 1.0);
     glVertex3f( linhaNeg, 0.1f, colunaNeg );
     glEnd();
 }
@@ -241,6 +267,10 @@ void initRender(int argc, char *argv[])
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize (640, 480);
     glutCreateWindow ("TronGame");
+
+    glEnable (GL_TEXTURE_2D);
+
+    textureWallID = loadBMP_custom("models/textures/wall-texture.bmp");
 
     glEnable(GL_DEPTH_TEST);
 
