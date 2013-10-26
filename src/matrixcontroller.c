@@ -135,14 +135,11 @@ int gameStep()
 
     int step;
 
+    globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_TRAIL;
     incrementElementPosition( &(mainPlayer.position), mainPlayer.direction );
-    printf("Player position: X = %d Y = %d \n", mainPlayer.position.x, mainPlayer.position.y);
-    printf("Step: %d \n",isStepOk());
 
     step = isStepOk();
 
-    globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_SPACE;
-    incrementElementPosition( &(mainPlayer.position), mainPlayer.direction );
     globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_PLAYER;
 
     return step;

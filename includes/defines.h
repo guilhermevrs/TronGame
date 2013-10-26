@@ -13,7 +13,7 @@
 
 //Objects in game matrix
 #define GAME_SPACE   0
-#define GAME_WALL 1 
+#define GAME_WALL 1
 #define GAME_PLAYER 2
 #define GAME_ENEMY 3
 #define GAME_TRAIL 4
@@ -35,6 +35,9 @@
 
 //Wall parameters
 #define WALL_HEIGHT 10.0f
+
+//Trail parameters
+#define TRAIL_HEIGHT 4.6f
 
 //Game modes
 #define GAME_MODE_TOP 0

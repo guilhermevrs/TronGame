@@ -6,6 +6,11 @@ extern unsigned char gameMode;
 int stopGame;
 GLfloat aspect;
 GLuint textureWallID;
+GLuint textureTrailID;
+GLuint textureFloorID;
+
+float linhaInc = 110.0f/((float)SCENE_HEIGHT);
+float colunaInc = 110.0f/((float)SCENE_WIDTH);
 
 /*
     Display function for opengl
@@ -23,7 +28,6 @@ void display() {
 */
 float translateLine(unsigned char linha)
 {
-    float linhaInc = 110.0f/((float)SCENE_HEIGHT);
     return (2 * linhaInc * (float)linha) - 110.0f;
 }
 
@@ -33,7 +37,6 @@ float translateLine(unsigned char linha)
 */
 float translateColumn(unsigned char coluna)
 {
-    float colunaInc = 110.0f/((float)SCENE_WIDTH);
     return (2 * colunaInc * (float)coluna) - 110.0f;
 }
 
@@ -115,9 +118,6 @@ void reshape(GLsizei w, GLsizei h) {
 */
 void renderWall(float linha, float coluna)
 {
-
-    float linhaInc = 110.0f/((float)SCENE_HEIGHT);
-    float colunaInc = 110.0f/((float)SCENE_WIDTH);
     float linhaNeg = linha - linhaInc;
     float linhaPos = linha + linhaInc;
     float colunaNeg = coluna - colunaInc;
@@ -199,6 +199,8 @@ void renderWall(float linha, float coluna)
     glTexCoord2f (1.0, 1.0);
     glVertex3f( linhaNeg, 0.1f, colunaNeg );
     glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 /*
@@ -217,22 +219,114 @@ void renderPlayer(float linha, float coluna)
     glEnd();
 }
 
+void renderTrail(float linha, float coluna)
+{
+    float linhaNeg = linha - linhaInc;
+    float linhaPos = linha + linhaInc;
+    float colunaNeg = coluna - colunaInc;
+    float colunaPos = coluna + colunaInc;
+
+    glColor3f(0.7372f, 0.8666f, 0.9882f);//trail color
+    glBindTexture(GL_TEXTURE_2D, textureTrailID);
+    //FRONT
+    glBegin(GL_POLYGON);
+
+    glTexCoord2f (0.0, 0.0);
+    glVertex3f(  linhaPos, 0.1, colunaNeg );
+    glTexCoord2f (1.0, 0.0);
+    glVertex3f(  linhaPos,  TRAIL_HEIGHT, colunaNeg );
+    glTexCoord2f (1.0, 1.0);
+    glVertex3f( linhaNeg,  TRAIL_HEIGHT, colunaNeg );
+    glTexCoord2f (0.0, 1.0);
+    glVertex3f( linhaNeg, 0.1, colunaNeg );
+
+    glEnd();
+
+    // BACK
+    glBegin(GL_POLYGON);
+    glTexCoord2f (1.0, 1.0);
+    glVertex3f(  linhaPos, 0.1f, colunaPos );
+    glTexCoord2f (0.0, 1.0);
+    glVertex3f(  linhaPos,  TRAIL_HEIGHT, colunaPos );
+    glTexCoord2f (0.0, 0.0);
+    glVertex3f( linhaNeg,  TRAIL_HEIGHT, colunaPos );
+    glTexCoord2f (1.0, 0.0);
+    glVertex3f( linhaNeg, 0.1f, colunaPos );
+    glEnd();
+
+    // RIGHT
+    glBegin(GL_POLYGON);
+    glTexCoord2f (1.0, 0.0);
+    glVertex3f( linhaPos, 0.1f, colunaNeg );
+    glTexCoord2f (0.0, 1.0);
+    glVertex3f( linhaPos,  TRAIL_HEIGHT, colunaNeg );
+    glTexCoord2f (0.0, 0.0);
+    glVertex3f( linhaPos,  TRAIL_HEIGHT,  colunaPos );
+    glTexCoord2f (1.0, 1.0);
+    glVertex3f( linhaPos, 0.1f,  colunaPos );
+    glEnd();
+
+    // LEFT
+    glBegin(GL_POLYGON);
+    glTexCoord2f (1.0, 1.0);
+    glVertex3f( linhaNeg, 0.1f,  colunaPos );
+    glTexCoord2f (0.0, 0.0);
+    glVertex3f( linhaNeg,  TRAIL_HEIGHT,  colunaPos );
+    glTexCoord2f (0.0, 1.0);
+    glVertex3f( linhaNeg,  TRAIL_HEIGHT, colunaNeg );
+    glTexCoord2f (1.0, 0.0);
+    glVertex3f( linhaNeg, 0.1f, colunaNeg );
+    glEnd();
+
+    // TOP
+    glBegin(GL_POLYGON);
+    glTexCoord2f (0.0, 1.0);
+    glVertex3f(  linhaPos,  TRAIL_HEIGHT,  colunaPos );
+    glTexCoord2f (1.0, 1.0);
+    glVertex3f(  linhaPos,  TRAIL_HEIGHT, colunaNeg );
+    glTexCoord2f (0.0, 0.0);
+    glVertex3f( linhaNeg,  TRAIL_HEIGHT, colunaNeg );
+    glTexCoord2f (1.0, 0.0);
+    glVertex3f( linhaNeg,  TRAIL_HEIGHT,  colunaPos );
+    glEnd();
+
+    // BOTTOM
+    glBegin(GL_POLYGON);
+    glTexCoord2f (0.0, 0.0);
+    glVertex3f(  linhaPos, 0.1f, colunaNeg );
+    glTexCoord2f (1.0, 0.0);
+    glVertex3f(  linhaPos, 0.1f,  colunaPos );
+    glTexCoord2f (0.0, 1.0);
+    glVertex3f( linhaNeg, 0.1f,  colunaPos );
+    glTexCoord2f (1.0, 1.0);
+    glVertex3f( linhaNeg, 0.1f, colunaNeg );
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 /*
     Renders the terrain
 */
 void renderMatrix()
 {
     unsigned char linha, coluna;
-    float linhaInc, colunaInc, posLinha, posColuna;
+    float posLinha, posColuna;
 
     glClear(GL_COLOR_BUFFER_BIT);
-    glColor3f(0.0f, 0.0f, 1.0f); //Terrain color
+    glColor3f(0.7372f, 0.8666f, 0.9882f); //Terrain color
+    glBindTexture(GL_TEXTURE_2D, textureFloorID);
     glBegin(GL_QUADS);
+        glTexCoord2f (0.0f, 0.0f);
         glVertex3f(110.0f,0.0f,-110.0f);
+        glTexCoord2f (1.0f, 0.0f);
         glVertex3f(-110.0f,0.0f,-110.0f);
+        glTexCoord2f (1.0f, 1.0f);
         glVertex3f(-110.0f,0.0f,110.0f);
+        glTexCoord2f (0.0f, 1.0f);
         glVertex3f(110.0f,0.0f,110.0f);
     glEnd();
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     for (linha = 0; linha < SCENE_HEIGHT; ++linha)
     {
@@ -245,6 +339,8 @@ void renderMatrix()
                 renderWall(posLinha, posColuna);
              else if(globalMatrix[linha][coluna] == GAME_PLAYER) //IS PLAYER?
                 renderPlayer(posLinha, posColuna);
+            else if(globalMatrix[linha][coluna] == GAME_TRAIL)
+                renderTrail(posLinha, posColuna);
         }
     }
 }
@@ -252,14 +348,21 @@ void renderMatrix()
 //Usado para o loop do jogo
 void animateGame(int a)
 {
+    int gameIsOver = 0;
     if(stopGame != 1)
-        gameStep();
+        gameIsOver = gameStep() != STEP_OK;
     if(gameMode == GAME_MODE_3D)
         set3rdVision();
     else
         setTopVision();
     glutPostRedisplay();
-    glutTimerFunc(200, animateGame, a);
+    if(!gameIsOver)
+        glutTimerFunc(100, animateGame, a);
+    else
+    {
+        printf("Game Is OVER!");
+        exit(1);
+    }
 }
 
 void initRender(int argc, char *argv[])
@@ -272,6 +375,8 @@ void initRender(int argc, char *argv[])
     glEnable (GL_TEXTURE_2D);
 
     textureWallID = loadBMP_custom("models/textures/wall-texture.bmp");
+    textureTrailID = loadBMP_custom("models/textures/trail-texture.bmp");
+    textureFloorID = loadBMP_custom("models/textures/floor-texture.bmp");
 
     glEnable(GL_DEPTH_TEST);
 
