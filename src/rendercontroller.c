@@ -9,8 +9,8 @@ GLuint textureWallID;
 GLuint textureTrailID;
 GLuint textureFloorID;
 
-float linhaInc = 110.0f/((float)SCENE_HEIGHT);
-float colunaInc = 110.0f/((float)SCENE_WIDTH);
+float linhaInc = WORLD_SIDE/((float)SCENE_HEIGHT);
+float colunaInc = WORLD_SIDE/((float)SCENE_WIDTH);
 
 /*
     Display function for opengl
@@ -28,7 +28,7 @@ void display() {
 */
 float translateLine(unsigned char linha)
 {
-    return (2 * linhaInc * (float)linha) - 110.0f;
+    return (2 * linhaInc * (float)linha) - WORLD_SIDE;
 }
 
 /*
@@ -37,7 +37,7 @@ float translateLine(unsigned char linha)
 */
 float translateColumn(unsigned char coluna)
 {
-    return (2 * colunaInc * (float)coluna) - 110.0f;
+    return (2 * colunaInc * (float)coluna) - WORLD_SIDE;
 }
 
 void set3rdVision()
@@ -80,7 +80,7 @@ void setTopVision()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    gluLookAt(0.0f,130.0f,1.0f, 0,0,0, 0,1,0);
+    gluLookAt(0.0f,CAMERA_TOP_DISTANCE,1.0f, 0,0,0, 0,1,0);
 }
 
 /*
@@ -318,13 +318,13 @@ void renderMatrix()
     glBindTexture(GL_TEXTURE_2D, textureFloorID);
     glBegin(GL_QUADS);
         glTexCoord2f (0.0f, 0.0f);
-        glVertex3f(110.0f,0.0f,-110.0f);
+        glVertex3f(WORLD_SIDE,0.0f,-WORLD_SIDE);
         glTexCoord2f (1.0f, 0.0f);
-        glVertex3f(-110.0f,0.0f,-110.0f);
+        glVertex3f(-WORLD_SIDE,0.0f,-WORLD_SIDE);
         glTexCoord2f (1.0f, 1.0f);
-        glVertex3f(-110.0f,0.0f,110.0f);
+        glVertex3f(-WORLD_SIDE,0.0f,WORLD_SIDE);
         glTexCoord2f (0.0f, 1.0f);
-        glVertex3f(110.0f,0.0f,110.0f);
+        glVertex3f(WORLD_SIDE,0.0f,WORLD_SIDE);
     glEnd();
     glBindTexture(GL_TEXTURE_2D, 0);
 

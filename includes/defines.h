@@ -2,14 +2,17 @@
 #define DEFINES_H 1
 
 //Scenario parameters
-#define SCENE_HEIGHT 30
-#define SCENE_WIDTH 30
+#define SCENE_HEIGHT 60
+#define SCENE_WIDTH 60
 
 //Arrow keys
 #define KEY_LEFT 100
 #define KEY_UP 101
 #define KEY_RIGHT 102
 #define KEY_DOWN 103
+
+//World parameters
+#define WORLD_SIDE 330.0f
 
 //Objects in game matrix
 #define GAME_SPACE   0
@@ -45,6 +48,7 @@
 
 //Camera paramenters
 #define CAMERA_3RD_DISTANCE 2.0f
+#define CAMERA_TOP_DISTANCE 390.0f
 
 
 
