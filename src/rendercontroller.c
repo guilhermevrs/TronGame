@@ -12,6 +12,68 @@ GLuint textureFloorID;
 float linhaInc = WORLD_SIDE/((float)SCENE_HEIGHT);
 float colunaInc = WORLD_SIDE/((float)SCENE_WIDTH);
 
+void renderObj(float linha, float coluna)
+{
+    int iVertex = 0;
+    int indexFace[3][3];
+    Vertex3D vertex[728];
+    FILE * file = fopen("models/TronBike/TronBike.obj", "r");
+    if( file == NULL ){
+        printf("Impossible to open the file !\n");
+        return 0;
+    }
+
+    glPushMatrix();
+    glColor3f(1.0f, 1.0f, 1.0f);
+
+    glTranslatef(linha,5.0f,coluna);
+
+    switch(mainPlayer.direction)
+    {
+        case DIRECTION_RIGHT:
+        default:
+            glRotatef(90.0f, 0, 1, 0);
+        break;
+        case DIRECTION_DOWN:
+            glRotatef(0.0f, 0, 1, 0);
+        break;
+        case DIRECTION_LEFT:
+            glRotatef(-90.0f, 0, 1, 0);
+        break;
+        case DIRECTION_UP:
+            glRotatef(180.0f, 0, 1, 0);
+        break;
+    }
+
+    glScalef(0.7f,0.7f,0.7f);
+    while(1)
+    {
+        char lineHeader[128];
+        // read the first word of the line
+        int res = fscanf(file, "%s", lineHeader);
+        if (feof(file))
+            break; // EOF = End Of File. Quit the loop.
+        else if ( strcmp( lineHeader, "v" ) == 0 ){
+            fscanf(file, "%f %f %f\n", &(vertex[iVertex].x), &(vertex[iVertex].y), &(vertex[iVertex].z) );
+            iVertex++;
+            //glBegin(GL_POINTS);
+            //glVertex3f(vertex[iVertex].x,vertex[iVertex].y,vertex[iVertex].z);
+            //glEnd();
+        }
+        else if ( strcmp( lineHeader, "f" ) == 0 ){
+            fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &indexFace[0][0], &indexFace[0][1], &indexFace[0][2], &indexFace[1][0], &indexFace[1][1], &indexFace[1][2], &indexFace[2][0], &indexFace[2][1], &indexFace[2][2] );
+
+            glBegin(GL_TRIANGLES);
+            glVertex3f(vertex[indexFace[0][0]-1].x,vertex[indexFace[0][0]-1].y,vertex[indexFace[0][0]-1].z);
+            glVertex3f(vertex[indexFace[1][0]-1].x,vertex[indexFace[1][0]-1].y,vertex[indexFace[1][0]-1].z);
+            glVertex3f(vertex[indexFace[2][0]-1].x,vertex[indexFace[2][0]-1].y,vertex[indexFace[2][0]-1].z);
+            glEnd();
+        }
+    }
+    fclose(file);
+    glPopMatrix();
+}
+
 /*
     Display function for opengl
 */
@@ -55,20 +117,20 @@ void set3rdVision()
     {
         case DIRECTION_RIGHT:
         default:
-            posXCamera = posLine - 5.0f;
+            posXCamera = posLine - CAMERA_3RD_DISTANCE;
             posZCamera = posColumn;
         break;
         case DIRECTION_DOWN:
             posXCamera = posLine;
-            posZCamera = posColumn - 5.0f;
+            posZCamera = posColumn - CAMERA_3RD_DISTANCE;
         break;
         case DIRECTION_LEFT:
-            posXCamera = posLine + 5.0f;
+            posXCamera = posLine + CAMERA_3RD_DISTANCE;
             posZCamera = posColumn;
         break;
         case DIRECTION_UP:
             posXCamera = posLine;
-            posZCamera = posColumn + 5.0f;
+            posZCamera = posColumn + CAMERA_3RD_DISTANCE;
         break;
     }
 
@@ -216,13 +278,9 @@ void renderWall(float linha, float coluna)
 */
 void renderPlayer(float linha, float coluna)
 {
-    glPointSize(4.0f);
-    glBegin(GL_POINTS);
 
-    glColor3f(0.0f,1.0f,0.0f);//player color
-    glVertex3f(linha,PLAYER_HEIGHT,coluna);
+    renderObj(linha, coluna);
 
-    glEnd();
 }
 
 void renderTrail(float linha, float coluna)
@@ -317,41 +375,6 @@ void renderTrail(float linha, float coluna)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void renderObj()
-{
-    int i = 0;
-    FILE * file = fopen("models/Light Cycle/HQ_Movie cycle.obj", "r");
-    if( file == NULL ){
-        printf("Impossible to open the file !\n");
-        return 0;
-    }
-    //glMatrixMode(GL_MODELVIEW);
-    //glLoadIdentity();
-    glPushMatrix();
-    glColor3f(1.0f, 1.0f, 1.0f); //Terrain color
-    glRotatef(90,1,0,0);
-    glRotatef(90,0,1,0);
-    glTranslatef(30.0f,30.0f,30.0f);
-    glScalef(20.0f,20.0f,20.0f);
-    while(1)
-    {
-        char lineHeader[128];
-        // read the first word of the line
-        int res = fscanf(file, "%s", lineHeader);
-        if (feof(file))
-            break; // EOF = End Of File. Quit the loop.
-        else if ( strcmp( lineHeader, "v" ) == 0 ){
-            Vertex3D vertex;
-            fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
-            glBegin(GL_POINTS);
-            glVertex3f(vertex.x,vertex.y,vertex.z);
-            glEnd();
-        }
-    }
-    fclose(file);
-    glPopMatrix();
-}
-
 /*
     Renders the terrain
 */
@@ -361,8 +384,6 @@ void renderMatrix()
     float posLinha, posColuna;
 
     glClear(GL_COLOR_BUFFER_BIT);
-
-    renderObj();
 
     glColor3f(0.7372f, 0.8666f, 0.9882f); //Terrain color
     glBindTexture(GL_TEXTURE_2D, textureFloorID);
