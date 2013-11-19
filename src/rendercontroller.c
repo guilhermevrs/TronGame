@@ -129,6 +129,7 @@ void renderWall(float linha, float coluna)
     //FRONT
     glBegin(GL_POLYGON);
 
+    glNormal3d(0, 0, 1);
     glTexCoord2f (0.0, 0.0);
     glVertex3f(  linhaPos, 0.1, colunaNeg );
     glTexCoord2f (1.0, 0.0);
@@ -142,6 +143,7 @@ void renderWall(float linha, float coluna)
 
     // BACK
     glBegin(GL_POLYGON);
+    glNormal3d(0, 0, -1);
     glTexCoord2f (1.0, 1.0);
     glVertex3f(  linhaPos, 0.1f, colunaPos );
     glTexCoord2f (0.0, 1.0);
@@ -154,6 +156,7 @@ void renderWall(float linha, float coluna)
 
     // RIGHT
     glBegin(GL_POLYGON);
+    glNormal3d(1, 0, 0);
     glTexCoord2f (1.0, 0.0);
     glVertex3f( linhaPos, 0.1f, colunaNeg );
     glTexCoord2f (0.0, 1.0);
@@ -166,6 +169,7 @@ void renderWall(float linha, float coluna)
 
     // LEFT
     glBegin(GL_POLYGON);
+    glNormal3d(-1, 0, 0);
     glTexCoord2f (1.0, 1.0);
     glVertex3f( linhaNeg, 0.1f,  colunaPos );
     glTexCoord2f (0.0, 0.0);
@@ -178,6 +182,7 @@ void renderWall(float linha, float coluna)
 
     // TOP
     glBegin(GL_POLYGON);
+    glNormal3d(0, 1, 0);
     glTexCoord2f (0.0, 1.0);
     glVertex3f(  linhaPos,  WALL_HEIGHT,  colunaPos );
     glTexCoord2f (1.0, 1.0);
@@ -190,6 +195,7 @@ void renderWall(float linha, float coluna)
 
     // BOTTOM
     glBegin(GL_POLYGON);
+    glNormal3d(0, -1, 0);
     glTexCoord2f (0.0, 0.0);
     glVertex3f(  linhaPos, 0.1f, colunaNeg );
     glTexCoord2f (1.0, 0.0);
@@ -228,9 +234,10 @@ void renderTrail(float linha, float coluna)
 
     glColor3f(0.7372f, 0.8666f, 0.9882f);//trail color
     glBindTexture(GL_TEXTURE_2D, textureTrailID);
-    //FRONT
     glBegin(GL_POLYGON);
 
+    //FRONT
+    glNormal3d(0, 0, 1);
     glTexCoord2f (0.0, 0.0);
     glVertex3f(  linhaPos, 0.1, colunaNeg );
     glTexCoord2f (1.0, 0.0);
@@ -244,6 +251,7 @@ void renderTrail(float linha, float coluna)
 
     // BACK
     glBegin(GL_POLYGON);
+    glNormal3d(0, 0, -1);
     glTexCoord2f (1.0, 1.0);
     glVertex3f(  linhaPos, 0.1f, colunaPos );
     glTexCoord2f (0.0, 1.0);
@@ -256,6 +264,7 @@ void renderTrail(float linha, float coluna)
 
     // RIGHT
     glBegin(GL_POLYGON);
+    glNormal3d(1, 0, 0);
     glTexCoord2f (1.0, 0.0);
     glVertex3f( linhaPos, 0.1f, colunaNeg );
     glTexCoord2f (0.0, 1.0);
@@ -268,6 +277,7 @@ void renderTrail(float linha, float coluna)
 
     // LEFT
     glBegin(GL_POLYGON);
+    glNormal3d(-1, 0, 0);
     glTexCoord2f (1.0, 1.0);
     glVertex3f( linhaNeg, 0.1f,  colunaPos );
     glTexCoord2f (0.0, 0.0);
@@ -280,6 +290,7 @@ void renderTrail(float linha, float coluna)
 
     // TOP
     glBegin(GL_POLYGON);
+    glNormal3d(0, 1, 0);
     glTexCoord2f (0.0, 1.0);
     glVertex3f(  linhaPos,  TRAIL_HEIGHT,  colunaPos );
     glTexCoord2f (1.0, 1.0);
@@ -292,6 +303,7 @@ void renderTrail(float linha, float coluna)
 
     // BOTTOM
     glBegin(GL_POLYGON);
+    glNormal3d(0, -1, 0);
     glTexCoord2f (0.0, 0.0);
     glVertex3f(  linhaPos, 0.1f, colunaNeg );
     glTexCoord2f (1.0, 0.0);
@@ -305,6 +317,41 @@ void renderTrail(float linha, float coluna)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void renderObj()
+{
+    int i = 0;
+    FILE * file = fopen("models/Light Cycle/HQ_Movie cycle.obj", "r");
+    if( file == NULL ){
+        printf("Impossible to open the file !\n");
+        return 0;
+    }
+    //glMatrixMode(GL_MODELVIEW);
+    //glLoadIdentity();
+    glPushMatrix();
+    glColor3f(1.0f, 1.0f, 1.0f); //Terrain color
+    glRotatef(90,1,0,0);
+    glRotatef(90,0,1,0);
+    glTranslatef(30.0f,30.0f,30.0f);
+    glScalef(20.0f,20.0f,20.0f);
+    while(1)
+    {
+        char lineHeader[128];
+        // read the first word of the line
+        int res = fscanf(file, "%s", lineHeader);
+        if (feof(file))
+            break; // EOF = End Of File. Quit the loop.
+        else if ( strcmp( lineHeader, "v" ) == 0 ){
+            Vertex3D vertex;
+            fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
+            glBegin(GL_POINTS);
+            glVertex3f(vertex.x,vertex.y,vertex.z);
+            glEnd();
+        }
+    }
+    fclose(file);
+    glPopMatrix();
+}
+
 /*
     Renders the terrain
 */
@@ -314,9 +361,13 @@ void renderMatrix()
     float posLinha, posColuna;
 
     glClear(GL_COLOR_BUFFER_BIT);
+
+    renderObj();
+
     glColor3f(0.7372f, 0.8666f, 0.9882f); //Terrain color
     glBindTexture(GL_TEXTURE_2D, textureFloorID);
     glBegin(GL_QUADS);
+        glNormal3d(0, 1, 0);
         glTexCoord2f (0.0f, 0.0f);
         glVertex3f(WORLD_SIDE,0.0f,-WORLD_SIDE);
         glTexCoord2f (1.0f, 0.0f);
@@ -367,6 +418,10 @@ void animateGame(int a)
 
 void initRender(int argc, char *argv[])
 {
+    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat mat_shininess[] = { 0.0 };
+    GLfloat light0_position[] = { 0.0, CAMERA_TOP_DISTANCE, 0.0, 0.0 };
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize (640, 480);
@@ -378,6 +433,15 @@ void initRender(int argc, char *argv[])
     textureTrailID = loadBMP_custom("models/textures/trail-texture.bmp");
     textureFloorID = loadBMP_custom("models/textures/floor-texture.bmp");
 
+    glClearColor (0.0, 0.0, 0.0, 0.0);
+    glShadeModel (GL_SMOOTH);
+
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+    glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+
+    //glEnable(GL_LIGHTING);
+    //glEnable(GL_LIGHT0);
     glEnable(GL_DEPTH_TEST);
 
     glutDisplayFunc(display); // Tell GLUT to use the method "display" for rendering
