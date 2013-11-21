@@ -2,8 +2,8 @@
 #define DEFINES_H 1
 
 //Scenario parameters
-#define SCENE_HEIGHT 30
-#define SCENE_WIDTH 30
+#define SCENE_HEIGHT 45
+#define SCENE_WIDTH 45
 
 //Arrow keys
 #define KEY_LEFT 100

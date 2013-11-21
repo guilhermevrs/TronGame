@@ -12,12 +12,13 @@ GLuint textureFloorID;
 float linhaInc = WORLD_SIDE/((float)SCENE_HEIGHT);
 float colunaInc = WORLD_SIDE/((float)SCENE_WIDTH);
 
-void renderObj(float linha, float coluna)
+void renderObj(float linha, float coluna, char* nomeArquivo)
 {
-    int iVertex = 0;
+    int iVertex = 0, iNormal = 0;
     int indexFace[3][3];
     Vertex3D vertex[728];
-    FILE * file = fopen("models/TronBike/TronBike.obj", "r");
+    Vertex3D normalVector[1304];
+    FILE * file = fopen(nomeArquivo, "r");
     if( file == NULL ){
         printf("Impossible to open the file !\n");
         return 0;
@@ -56,14 +57,16 @@ void renderObj(float linha, float coluna)
         else if ( strcmp( lineHeader, "v" ) == 0 ){
             fscanf(file, "%f %f %f\n", &(vertex[iVertex].x), &(vertex[iVertex].y), &(vertex[iVertex].z) );
             iVertex++;
-            //glBegin(GL_POINTS);
-            //glVertex3f(vertex[iVertex].x,vertex[iVertex].y,vertex[iVertex].z);
-            //glEnd();
+        }
+        else if ( strcmp( lineHeader, "vn" ) == 0 ){
+            fscanf(file, "%f %f %f\n", &(normalVector[iNormal].x), &(normalVector[iNormal].y), &(normalVector[iNormal].z) );
+            iNormal++;
         }
         else if ( strcmp( lineHeader, "f" ) == 0 ){
             fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &indexFace[0][0], &indexFace[0][1], &indexFace[0][2], &indexFace[1][0], &indexFace[1][1], &indexFace[1][2], &indexFace[2][0], &indexFace[2][1], &indexFace[2][2] );
 
             glBegin(GL_TRIANGLES);
+            glNormal3d(normalVector[ indexFace[0][2] - 1 ].x, normalVector[ indexFace[0][2] - 1 ].y, normalVector[ indexFace[0][2] - 1 ].z);
             glVertex3f(vertex[indexFace[0][0]-1].x,vertex[indexFace[0][0]-1].y,vertex[indexFace[0][0]-1].z);
             glVertex3f(vertex[indexFace[1][0]-1].x,vertex[indexFace[1][0]-1].y,vertex[indexFace[1][0]-1].z);
             glVertex3f(vertex[indexFace[2][0]-1].x,vertex[indexFace[2][0]-1].y,vertex[indexFace[2][0]-1].z);
@@ -279,7 +282,7 @@ void renderWall(float linha, float coluna)
 void renderPlayer(float linha, float coluna)
 {
 
-    renderObj(linha, coluna);
+    renderObj(linha, coluna, "models/TronBike/TronBike.obj");
 
 }
 
@@ -461,8 +464,8 @@ void initRender(int argc, char *argv[])
     glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
     glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
 
-    //glEnable(GL_LIGHTING);
-    //glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
     glEnable(GL_DEPTH_TEST);
 
     glutDisplayFunc(display); // Tell GLUT to use the method "display" for rendering
