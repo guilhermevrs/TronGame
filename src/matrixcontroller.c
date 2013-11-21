@@ -174,17 +174,32 @@ int isStepOk(Player thisPlayer)
     }
     return result;
 }
-
+/*
 float randomFloat()
 {
     srand(time(NULL));
     float r = (float)rand()/(float)RAND_MAX;
     return r;
 }
+*/
 
-void pursuePlayer()
+void pursuePlayer(Player *enemy, int direction)
 {
-
+    if(direction == DIRECTION_VERTICAL)
+    {
+        if(mainPlayer.position.x > enemy->position.x){
+            enemy->direction = DIRECTION_RIGHT;
+        }
+        else
+            enemy->direction = DIRECTION_LEFT;
+    }
+    else //HORIZONTAL
+    {
+        if(mainPlayer.position.y > enemy->position.y)
+            enemy->direction = DIRECTION_DOWN;
+        else
+            enemy->direction = DIRECTION_UP;
+    }
 }
 
 void IAofEnemy(Player *enemy){
@@ -198,6 +213,10 @@ void IAofEnemy(Player *enemy){
         switch(enemy->direction)
     {
         case DIRECTION_LEFT:{
+
+                    if((globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE) && (globalMatrix[enemy->position.x][enemy->position.y-1] == GAME_SPACE))
+                        pursuePlayer(enemy,DIRECTION_HORIZONTAL);
+                    else
                     if(globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE){
                         enemy->position.y = enemy->position.y + 1;
                         enemy->direction = DIRECTION_DOWN;
@@ -210,6 +229,9 @@ void IAofEnemy(Player *enemy){
             }
         break;
         case DIRECTION_UP:{
+                if((globalMatrix[enemy->position.x+1][enemy->position.y] == GAME_SPACE) && (globalMatrix[enemy->position.x-1][enemy->position.y] == GAME_SPACE))
+                    pursuePlayer(enemy,DIRECTION_VERTICAL);
+                else
                 if(globalMatrix[enemy->position.x+1][enemy->position.y] == GAME_SPACE){
                     enemy->position.x = enemy->position.x + 1;
                     enemy->direction = DIRECTION_RIGHT;
@@ -222,9 +244,8 @@ void IAofEnemy(Player *enemy){
             }
         break;
         case DIRECTION_RIGHT:{
-                if((globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE) && (globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE))
-                {
-                }
+                if((globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE) && (globalMatrix[enemy->position.x][enemy->position.y-1] == GAME_SPACE))
+                    pursuePlayer(enemy,DIRECTION_HORIZONTAL);
                 else
                 if(globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE){
                     enemy->position.y = enemy->position.y + 1;
@@ -239,6 +260,9 @@ void IAofEnemy(Player *enemy){
         break;
         case DIRECTION_DOWN:
         default:{
+                if((globalMatrix[enemy->position.x+1][enemy->position.y] == GAME_SPACE) && (globalMatrix[enemy->position.x-1][enemy->position.y] == GAME_SPACE))
+                    pursuePlayer(enemy,DIRECTION_VERTICAL);
+                else
                  if(globalMatrix[enemy->position.x+1][enemy->position.y] == GAME_SPACE){
                     enemy->position.x = enemy->position.x + 1;
                     enemy->direction = DIRECTION_RIGHT;
@@ -253,31 +277,6 @@ void IAofEnemy(Player *enemy){
     }
     }
 }
-
-/*
-void translateMove(Player enemy)
-{
-    switch(enemy.direction)
-    {
-        case DIRECTION_LEFT:
-        {
-
-        }
-        case DIRECTION_UP:
-        {
-
-        }
-        case DIRECTION_RIGHT:
-        {
-
-        }
-        case DIRECTION_DOWN:
-        {
-
-        }
-    }
-}
-*/
 
 int gameStep()
 {

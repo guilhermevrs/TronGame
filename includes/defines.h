@@ -32,6 +32,8 @@
 #define DIRECTION_UP 1
 #define DIRECTION_RIGHT 2
 #define DIRECTION_DOWN 3
+#define DIRECTION_HORIZONTAL 0
+#define DIRECTION_VERTICAL 1
 
 //Player parameters
 #define PLAYER_HEIGHT 5.0f
@@ -49,8 +51,5 @@
 //Camera paramenters
 #define CAMERA_3RD_DISTANCE 2.0f
 #define CAMERA_TOP_DISTANCE 390.0f
-
-
-
 
 #endif
