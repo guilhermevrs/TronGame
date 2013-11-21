@@ -72,10 +72,43 @@ void incrementElementPosition(Position *pos, char direction)
         break;
         case DIRECTION_DOWN:
         default:
-            if(isElementAtVerticalBorder(*pos) <= 0)
+            if(isElementAtVerticalBorder(*pos) <= 0){
                 pos->y = pos->y + 1;
+            }
             else
                 pos->y = 0;
+        break;
+    }
+}
+
+void decrementElementPosition(Position *pos, char direction)
+{
+    switch(direction)
+    {
+        case DIRECTION_LEFT:
+            if(isElementAtHorizontalBorder(*pos) > 0)
+                pos->x = 0;
+            else
+                pos->x = pos->x + 1;
+        break;
+        case DIRECTION_UP:
+            if(isElementAtVerticalBorder(*pos) > 0)
+                pos->y = 0;
+            else
+                pos->y = pos->y + 1;
+        break;
+        case DIRECTION_RIGHT:
+            if(isElementAtHorizontalBorder(*pos) > 0)
+                pos->x = SCENE_WIDTH -1;
+            else
+                pos->x = pos->x - 1;
+        break;
+        case DIRECTION_DOWN:
+        default:
+            if(isElementAtVerticalBorder(*pos) < 0)
+                pos->y = SCENE_HEIGHT-1;
+            else
+                pos->y = pos->y -1;
         break;
     }
 }
@@ -149,16 +182,22 @@ float randomFloat()
     return r;
 }
 
+void pursuePlayer()
+{
+
+}
+
 void IAofEnemy(Player *enemy){
     int enemyStep = isStepOk(*enemy);
     float randomNumber;
 
     if((enemyStep==STEP_COLLISION_TRAIL) || (enemyStep==STEP_COLLISION_WALL))
     {
+        decrementElementPosition(&enemy->position, enemy->direction);
+
         switch(enemy->direction)
     {
         case DIRECTION_LEFT:{
-                enemy->position.x = enemy->position.x + 1;
                     if(globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE){
                         enemy->position.y = enemy->position.y + 1;
                         enemy->direction = DIRECTION_DOWN;
@@ -171,7 +210,6 @@ void IAofEnemy(Player *enemy){
             }
         break;
         case DIRECTION_UP:{
-                enemy->position.y = enemy->position.y + 1;
                 if(globalMatrix[enemy->position.x+1][enemy->position.y] == GAME_SPACE){
                     enemy->position.x = enemy->position.x + 1;
                     enemy->direction = DIRECTION_RIGHT;
@@ -184,12 +222,8 @@ void IAofEnemy(Player *enemy){
             }
         break;
         case DIRECTION_RIGHT:{
-                enemy->position.x = enemy->position.x - 1;
-                
                 if((globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE) && (globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE))
                 {
-                    randomNumber = randomFloat();
-                    printf("%f\n",randomNumber);
                 }
                 else
                 if(globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE){
@@ -205,7 +239,6 @@ void IAofEnemy(Player *enemy){
         break;
         case DIRECTION_DOWN:
         default:{
-                enemy->position.y = enemy->position.y - 1;
                  if(globalMatrix[enemy->position.x+1][enemy->position.y] == GAME_SPACE){
                     enemy->position.x = enemy->position.x + 1;
                     enemy->direction = DIRECTION_RIGHT;
