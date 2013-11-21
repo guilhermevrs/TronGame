@@ -1,4 +1,6 @@
 #include "../includes/matrixcontroller.h"
+#include <time.h>
+#include <stdlib.h>
 
 char globalMatrix[SCENE_HEIGHT][SCENE_WIDTH];
 
@@ -140,8 +142,16 @@ int isStepOk(Player thisPlayer)
     return result;
 }
 
+float randomFloat()
+{
+    srand(time(NULL));
+    float r = (float)rand()/(float)RAND_MAX;
+    return r;
+}
+
 void IAofEnemy(Player *enemy){
     int enemyStep = isStepOk(*enemy);
+    float randomNumber;
 
     if((enemyStep==STEP_COLLISION_TRAIL) || (enemyStep==STEP_COLLISION_WALL))
     {
@@ -149,15 +159,15 @@ void IAofEnemy(Player *enemy){
     {
         case DIRECTION_LEFT:{
                 enemy->position.x = enemy->position.x + 1;
-                if(globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE){
-                    enemy->position.y = enemy->position.y + 1;
-                    enemy->direction = DIRECTION_DOWN;
-                }
-                else
-                    if(globalMatrix[enemy->position.x][enemy->position.y-1] == GAME_SPACE){
-                         enemy->position.y = enemy->position.y - 1;
-                         enemy->direction = DIRECTION_UP;
+                    if(globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE){
+                        enemy->position.y = enemy->position.y + 1;
+                        enemy->direction = DIRECTION_DOWN;
                     }
+                    else
+                        if(globalMatrix[enemy->position.x][enemy->position.y-1] == GAME_SPACE){
+                             enemy->position.y = enemy->position.y - 1;
+                            enemy->direction = DIRECTION_UP;
+                        }
             }
         break;
         case DIRECTION_UP:{
@@ -175,6 +185,13 @@ void IAofEnemy(Player *enemy){
         break;
         case DIRECTION_RIGHT:{
                 enemy->position.x = enemy->position.x - 1;
+                
+                if((globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE) && (globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE))
+                {
+                    randomNumber = randomFloat();
+                    printf("%f\n",randomNumber);
+                }
+                else
                 if(globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE){
                     enemy->position.y = enemy->position.y + 1;
                     enemy->direction = DIRECTION_DOWN;
