@@ -76,6 +76,7 @@ void specialKeyPressed (int key, int x, int y) {
 int main (int argc, char *argv[]) {
 
     gameMode = GAME_MODE_TOP;
+    srand(time(NULL)); //preciso que o seed fique aqui
     initGameMatrix();
 
     initRender(argc, argv);

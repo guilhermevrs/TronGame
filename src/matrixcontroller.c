@@ -162,8 +162,10 @@ int isStepOk(Player thisPlayer)
         case GAME_WALL:
             result = STEP_COLLISION_WALL;
         break;
-        case GAME_ENEMY:
+        case GAME_ENEMY:{
             result = STEP_COLLISION_ENEMY;
+            printf("bateu");
+        }
         break;
         case GAME_TRAIL:
             result = STEP_COLLISION_TRAIL;
@@ -174,14 +176,12 @@ int isStepOk(Player thisPlayer)
     }
     return result;
 }
-/*
-float randomFloat()
+
+float generateRandomFloat()
 {
-    srand(time(NULL));
     float r = (float)rand()/(float)RAND_MAX;
     return r;
 }
-*/
 
 void pursuePlayer(Player *enemy, int direction)
 {
@@ -211,8 +211,8 @@ void IAofEnemy(Player *enemy){
         decrementElementPosition(&enemy->position, enemy->direction);
 
         switch(enemy->direction)
-    {
-        case DIRECTION_LEFT:{
+        {
+            case DIRECTION_LEFT:{
 
                     if((globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE) && (globalMatrix[enemy->position.x][enemy->position.y-1] == GAME_SPACE))
                         pursuePlayer(enemy,DIRECTION_HORIZONTAL);
@@ -227,8 +227,8 @@ void IAofEnemy(Player *enemy){
                             enemy->direction = DIRECTION_UP;
                         }
             }
-        break;
-        case DIRECTION_UP:{
+            break;
+            case DIRECTION_UP:{
                 if((globalMatrix[enemy->position.x+1][enemy->position.y] == GAME_SPACE) && (globalMatrix[enemy->position.x-1][enemy->position.y] == GAME_SPACE))
                     pursuePlayer(enemy,DIRECTION_VERTICAL);
                 else
@@ -242,8 +242,8 @@ void IAofEnemy(Player *enemy){
                          enemy->direction = DIRECTION_LEFT;
                     }
             }
-        break;
-        case DIRECTION_RIGHT:{
+            break;
+            case DIRECTION_RIGHT:{
                 if((globalMatrix[enemy->position.x][enemy->position.y+1] == GAME_SPACE) && (globalMatrix[enemy->position.x][enemy->position.y-1] == GAME_SPACE))
                     pursuePlayer(enemy,DIRECTION_HORIZONTAL);
                 else
@@ -257,9 +257,9 @@ void IAofEnemy(Player *enemy){
                          enemy->direction = DIRECTION_UP;
                     }
             }
-        break;
-        case DIRECTION_DOWN:
-        default:{
+            break;
+            case DIRECTION_DOWN:
+            default:{
                 if((globalMatrix[enemy->position.x+1][enemy->position.y] == GAME_SPACE) && (globalMatrix[enemy->position.x-1][enemy->position.y] == GAME_SPACE))
                     pursuePlayer(enemy,DIRECTION_VERTICAL);
                 else
@@ -272,10 +272,24 @@ void IAofEnemy(Player *enemy){
                          enemy->position.x = enemy->position.x - 1;
                          enemy->direction = DIRECTION_LEFT;
                     }
-        break;
+            break;
+            }
         }
     }
+    
+    else{ //No collision
+        randomNumber = generateRandomFloat();
+
+        //Inimigos perseguem o player
+        if (randomNumber < 0.05 || randomNumber > 0.95)
+        {
+            if(enemy->direction == DIRECTION_LEFT || enemy->direction == DIRECTION_RIGHT)
+                pursuePlayer(enemy, DIRECTION_HORIZONTAL);
+            else
+                pursuePlayer(enemy, DIRECTION_VERTICAL);
+        }
     }
+    
 }
 
 int gameStep()
@@ -291,13 +305,13 @@ int gameStep()
     incrementElementPosition( &(enemy1.position), enemy1.direction );
 	incrementElementPosition( &(enemy2.position), enemy2.direction );
 
-    step = isStepOk(mainPlayer);
     IAofEnemy(&enemy1);
     IAofEnemy(&enemy2);
-
+    globalMatrix[enemy1.position.x][enemy1.position.y] = GAME_ENEMY;
+    globalMatrix[enemy2.position.x][enemy2.position.y] = GAME_ENEMY;
+    
+    step = isStepOk(mainPlayer);
     globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_PLAYER;
-	globalMatrix[enemy1.position.x][enemy1.position.y] = GAME_ENEMY;
-	globalMatrix[enemy2.position.x][enemy2.position.y] = GAME_ENEMY;
 
     return step;
 }
