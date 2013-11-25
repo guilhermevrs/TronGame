@@ -23,15 +23,16 @@
 
 //Returns of the matrixcontroller
 #define STEP_OK 0
-#define STEP_COLLISION_WALL 1
-#define STEP_COLLISION_ENEMY 2
-#define STEP_COLLISION_TRAIL 3
+#define STEP_COLLISION 1
+#define ENEMY_DIED 2
 
 //Directions of elements in game
 #define DIRECTION_LEFT 0
 #define DIRECTION_UP 1
 #define DIRECTION_RIGHT 2
 #define DIRECTION_DOWN 3
+#define DIRECTION_HORIZONTAL 0
+#define DIRECTION_VERTICAL 1
 
 //Player parameters
 #define PLAYER_HEIGHT 3.0f
@@ -49,8 +50,5 @@
 //Camera paramenters
 #define CAMERA_3RD_DISTANCE 10.0f
 #define CAMERA_TOP_DISTANCE 390.0f
-
-
-
 
 #endif

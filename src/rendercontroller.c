@@ -286,6 +286,16 @@ void renderPlayer(float linha, float coluna)
 
 }
 
+/*
+    Render the enemy
+    linha = position in x
+    coluna = position in y
+*/
+void renderEnemy(float linha, float coluna)
+{
+    renderObj(linha, coluna, "models/TronBike/TronBike.obj");
+}
+
 void renderTrail(float linha, float coluna)
 {
     float linhaNeg = linha - linhaInc;
@@ -414,6 +424,8 @@ void renderMatrix()
                 renderWall(posLinha, posColuna);
              else if(globalMatrix[linha][coluna] == GAME_PLAYER) //IS PLAYER?
                 renderPlayer(posLinha, posColuna);
+			 else if(globalMatrix[linha][coluna] == GAME_ENEMY) //IS ENEMY?
+				renderEnemy(posLinha, posColuna);
             else if(globalMatrix[linha][coluna] == GAME_TRAIL)
                 renderTrail(posLinha, posColuna);
         }
@@ -450,6 +462,8 @@ void initRender(int argc, char *argv[])
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize (640, 480);
     glutCreateWindow ("TronGame");
+
+    glViewport(0, 0, 250, 250);
 
     glEnable (GL_TEXTURE_2D);
 

@@ -11,6 +11,8 @@
 #include "../includes/rendercontroller.h"
 
 extern Player mainPlayer;
+extern Player enemy1;
+extern Player enemy2;
 extern int stopGame;
 unsigned char gameMode;
 
@@ -74,6 +76,7 @@ void specialKeyPressed (int key, int x, int y) {
 int main (int argc, char *argv[]) {
 
     gameMode = GAME_MODE_TOP;
+    srand(time(NULL)); //preciso que o seed fique aqui
     initGameMatrix();
 
     initRender(argc, argv);
