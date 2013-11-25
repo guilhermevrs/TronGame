@@ -23,9 +23,8 @@
 
 //Returns of the matrixcontroller
 #define STEP_OK 0
-#define STEP_COLLISION_WALL 1
-#define STEP_COLLISION_ENEMY 2
-#define STEP_COLLISION_TRAIL 3
+#define STEP_COLLISION 1
+#define ENEMY_DIED 2
 
 //Directions of elements in game
 #define DIRECTION_LEFT 0
