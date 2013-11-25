@@ -18,8 +18,9 @@
 #define GAME_SPACE   0
 #define GAME_WALL 1
 #define GAME_PLAYER 2
-#define GAME_ENEMY 3
-#define GAME_TRAIL 4
+#define GAME_ENEMY_1 3
+#define GAME_ENEMY_2 4
+#define GAME_TRAIL 5
 
 //Returns of the matrixcontroller
 #define STEP_OK 0

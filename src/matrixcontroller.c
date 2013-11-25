@@ -133,8 +133,8 @@ void initGameMatrix()
 	enemy1.direction = DIRECTION_RIGHT;
 	enemy2.direction = DIRECTION_RIGHT;    
 	globalMatrix[0][0] = GAME_PLAYER;
-	globalMatrix[30][30] = GAME_ENEMY;
-	globalMatrix[50][10] = GAME_ENEMY;
+	globalMatrix[30][30] = GAME_ENEMY_1;
+	globalMatrix[50][10] = GAME_ENEMY_2;
 
     for (i = 12; i < 20; ++i)
     {
@@ -162,9 +162,13 @@ int isStepOk(Player thisPlayer)
         case GAME_WALL:
             result = STEP_COLLISION;
         break;
-        case GAME_ENEMY:
+        case GAME_ENEMY_1:
             result = STEP_COLLISION;
         break;
+        case GAME_ENEMY_2:
+            result = STEP_COLLISION;
+        break;
+       
         case GAME_TRAIL:{
             result = STEP_COLLISION;
         }
@@ -284,23 +288,22 @@ int gameStep()
     globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_TRAIL;
 	globalMatrix[enemy1.position.x][enemy1.position.y] = GAME_TRAIL;
 	globalMatrix[enemy2.position.x][enemy2.position.y] = GAME_TRAIL;
-	
+
     incrementElementPosition( &(mainPlayer.position), mainPlayer.direction );
+    playerStep = isStepOk(mainPlayer);
+    globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_PLAYER;
     incrementElementPosition( &(enemy1.position), enemy1.direction );
     incrementElementPosition( &(enemy2.position), enemy2.direction );
 
     if(IAofEnemy(&enemy1) != ENEMY_DIED)
-        globalMatrix[enemy1.position.x][enemy1.position.y] = GAME_ENEMY;
+        globalMatrix[enemy1.position.x][enemy1.position.y] = GAME_ENEMY_1;
     else
         globalMatrix[enemy1.position.x][enemy1.position.y] = GAME_SPACE;
 
     if(IAofEnemy(&enemy2) != ENEMY_DIED)
-        globalMatrix[enemy2.position.x][enemy2.position.y] = GAME_ENEMY;
+        globalMatrix[enemy2.position.x][enemy2.position.y] = GAME_ENEMY_2;
     else
         globalMatrix[enemy2.position.x][enemy2.position.y] = GAME_SPACE;
-
-    playerStep = isStepOk(mainPlayer);
-    globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_PLAYER;
 
     return playerStep;
 }
