@@ -25,7 +25,8 @@
 //Returns of the matrixcontroller
 #define STEP_OK 0
 #define STEP_COLLISION 1
-#define ENEMY_DIED 2
+#define PLAYER_WON 2
+#define GAME_OVER 3
 
 //Directions of elements in game
 #define DIRECTION_LEFT 0
@@ -37,6 +38,8 @@
 
 //Player parameters
 #define PLAYER_HEIGHT 3.0f
+#define PLAYER_ALIVE 0
+#define PLAYER_DEAD 1
 
 //Wall parameters
 #define WALL_HEIGHT 10.0f

@@ -12,6 +12,7 @@ typedef struct{
 typedef struct{
     Position position;
     unsigned char direction;
+    int state;
 } Player;
 
 /*

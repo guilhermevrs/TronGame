@@ -115,30 +115,6 @@ void decrementElementPosition(Position *pos, char direction)
 
 void initGameMatrix(char* nomeArquivo)
 {
-    /*
-    int i, j;
-    for (i = 0; i < SCENE_HEIGHT; ++i)
-    {
-        for (j = 0; j < SCENE_WIDTH; ++j)
-        {
-            globalMatrix[i][j] = GAME_SPACE;
-        }
-    }
-
-
-    for (i = 12; i < 20; ++i)
-    {
-        for (j = 4; j < 6; ++j)
-        {
-            globalMatrix[i][j] = GAME_WALL;
-        }
-
-        for (j = 15; j < 20; ++j)
-        {
-            globalMatrix[i][j] = GAME_WALL;
-        }
-    }
-    */
 
     FILE * file = fopen(nomeArquivo, "r");
     char pixelzinho; 
@@ -176,7 +152,10 @@ void initGameMatrix(char* nomeArquivo)
     enemy2.position.y = 0;
     mainPlayer.direction = DIRECTION_RIGHT;
     enemy1.direction = DIRECTION_RIGHT;
-    enemy2.direction = DIRECTION_DOWN;    
+    enemy2.direction = DIRECTION_DOWN;
+    mainPlayer.state = PLAYER_ALIVE;
+    enemy1.state = PLAYER_ALIVE;
+    enemy2.state = PLAYER_ALIVE;    
     globalMatrix[1][0] = GAME_PLAYER;
     globalMatrix[20][20] = GAME_ENEMY_1;
     globalMatrix[40][0] = GAME_ENEMY_2;
@@ -251,7 +230,7 @@ int translateElementDirection(int elementDirection)
     return newDirection;
 }
 
-int IAofEnemy(Player *enemy)
+void IAofEnemy(Player *enemy)
 {
     int enemyStep = isStepOk(*enemy);
     float randomNumber;
@@ -274,7 +253,7 @@ int IAofEnemy(Player *enemy)
                     else
                         if(globalMatrix[enemy->position.x][enemy->position.y-1] == GAME_SPACE)
                             enemy->direction = DIRECTION_UP;
-                        else return ENEMY_DIED;
+                        else enemy->state = PLAYER_DEAD;
             }
             break;
             case DIRECTION_VERTICAL:
@@ -288,7 +267,7 @@ int IAofEnemy(Player *enemy)
                     else
                         if(globalMatrix[enemy->position.x-1][enemy->position.y] == GAME_SPACE)
                             enemy->direction = DIRECTION_LEFT;
-                        else return ENEMY_DIED;
+                        else enemy->state = PLAYER_DEAD;
             }
             break;
         }
@@ -308,14 +287,49 @@ int IAofEnemy(Player *enemy)
                 pursuePlayer(enemy, DIRECTION_VERTICAL);
         }
     }
+}
 
-    return 0;
+void incrementEnemyPosition(Player *enemy)
+{
+    if(enemy->state != PLAYER_DEAD){
+        incrementElementPosition( &(enemy->position), enemy->direction );
+        IAofEnemy(enemy);
+    }
+}
+
+void updateEnemysPositions()
+{
+    if(enemy1.state != PLAYER_DEAD)
+        globalMatrix[enemy1.position.x][enemy1.position.y] = GAME_ENEMY_1;
+    else
+        globalMatrix[enemy1.position.x][enemy1.position.y] = GAME_SPACE;
+
+    if(enemy2.state != PLAYER_DEAD)
+        globalMatrix[enemy2.position.x][enemy2.position.y] = GAME_ENEMY_2;
+    else
+        globalMatrix[enemy2.position.x][enemy2.position.y] = GAME_SPACE;
+}
+
+int verifyIfPlayerWon(int playerStep)
+{
+    int retorno=0;
+
+    if(playerStep == STEP_OK)
+        if((enemy1.state == PLAYER_DEAD) && (enemy2.state == PLAYER_DEAD))
+            retorno = PLAYER_WON;
+        else
+            retorno = STEP_OK;        
+    else
+        retorno = GAME_OVER;
+
+    return retorno;
 }
 
 int gameStep()
 {
 
     int playerStep;
+    int gameStep;
 
     globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_TRAIL;
 	globalMatrix[enemy1.position.x][enemy1.position.y] = GAME_TRAIL;
@@ -324,18 +338,13 @@ int gameStep()
     incrementElementPosition( &(mainPlayer.position), mainPlayer.direction );
     playerStep = isStepOk(mainPlayer);
     globalMatrix[mainPlayer.position.x][mainPlayer.position.y] = GAME_PLAYER;
-    incrementElementPosition( &(enemy1.position), enemy1.direction );
-    incrementElementPosition( &(enemy2.position), enemy2.direction );
 
-    if(IAofEnemy(&enemy1) != ENEMY_DIED)
-        globalMatrix[enemy1.position.x][enemy1.position.y] = GAME_ENEMY_1;
-    else
-        globalMatrix[enemy1.position.x][enemy1.position.y] = GAME_SPACE;
+    incrementEnemyPosition(&enemy1);
+    incrementEnemyPosition(&enemy2);
 
-    if(IAofEnemy(&enemy2) != ENEMY_DIED)
-        globalMatrix[enemy2.position.x][enemy2.position.y] = GAME_ENEMY_2;
-    else
-        globalMatrix[enemy2.position.x][enemy2.position.y] = GAME_SPACE;
+    updateEnemysPositions();
 
-    return playerStep;
+    gameStep = verifyIfPlayerWon(playerStep);
+
+    return gameStep;
 }

@@ -77,7 +77,7 @@ void renderObj(float linha, float coluna, char* nomeArquivo)
         }
     }
     fclose(file);
-    
+
     glPopMatrix();
 }
 
@@ -134,6 +134,7 @@ void renderObj2(float linha, float coluna, char* nomeArquivo, Player enemy)
         }
         else if ( strcmp( lineHeader, "f" ) == 0 ){
             fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &indexFace[0][0], &indexFace[0][1], &indexFace[0][2], &indexFace[1][0], &indexFace[1][1], &indexFace[1][2], &indexFace[2][0], &indexFace[2][1], &indexFace[2][2] );
+
             glBegin(GL_TRIANGLES);
             glNormal3d(normalVector[ indexFace[0][2] - 1 ].x, normalVector[ indexFace[0][2] - 1 ].y, normalVector[ indexFace[0][2] - 1 ].z);
             glVertex3f(vertex[indexFace[0][0]-1].x,vertex[indexFace[0][0]-1].y,vertex[indexFace[0][0]-1].z);
@@ -509,17 +510,22 @@ void animateGame(int a)
 {
     int gameIsOver = 0;
     if(stopGame != 1)
-        gameIsOver = gameStep() != STEP_OK;
+        gameIsOver = gameStep();
     if(gameMode == GAME_MODE_3D)
         set3rdVision();
     else
         setTopVision();
     glutPostRedisplay();
-    if(!gameIsOver)
-        glutTimerFunc(100, animateGame, a);
+    if(gameIsOver != GAME_OVER)
+        if(gameIsOver != PLAYER_WON)
+            glutTimerFunc(100, animateGame, a);
+        else{
+            printf("Congratulations! You WON!\n");
+            exit(1);
+        }
     else
     {
-        printf("Game Is OVER!");
+        printf("Game Is OVER!\n");
         exit(1);
     }
 }
