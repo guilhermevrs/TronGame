@@ -113,8 +113,9 @@ void decrementElementPosition(Position *pos, char direction)
     }
 }
 
-void initGameMatrix()
+void initGameMatrix(char* nomeArquivo)
 {
+    /*
     int i, j;
     for (i = 0; i < SCENE_HEIGHT; ++i)
     {
@@ -148,6 +149,32 @@ void initGameMatrix()
             globalMatrix[i][j] = GAME_WALL;
         }
     }
+    */
+
+    FILE * file = fopen(nomeArquivo, "r");
+    char pixelzinho; 
+    int i=0, j=0;
+    if( file == NULL ){
+        printf("Impossible to open the file !\n");
+        return 0;
+    }
+
+    
+    while(!feof(file))
+    {
+        pixelzinho = getc(file);
+        if(pixelzinho != "\n"){
+            if(pixelzinho != '1')
+                globalMatrix[i][j] = GAME_SPACE;
+            else
+                globalMatrix[i][j] = GAME_WALL;
+            j++;
+        }
+        else
+            i++;
+    }
+    
+    fclose(file);
 }
 
 /*

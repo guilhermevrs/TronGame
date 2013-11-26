@@ -92,7 +92,7 @@ void renderObj2(float linha, float coluna, char* nomeArquivo, Player enemy)
     }
 
     glPushMatrix();
-    
+
     glColor3f(1.0f, 0.0f, 0.0f);
 
     glTranslatef(linha,5.0f,coluna);
@@ -150,6 +150,7 @@ void renderObj2(float linha, float coluna, char* nomeArquivo, Player enemy)
 void display() {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     renderMatrix();
+
     glFlush();
     glutSwapBuffers();
 }
@@ -532,8 +533,6 @@ void initRender(int argc, char *argv[])
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize (640, 480);
     glutCreateWindow ("TronGame");
-
-    glViewport(0, 0, 250, 250);
 
     glEnable (GL_TEXTURE_2D);
 

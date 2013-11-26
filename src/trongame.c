@@ -77,7 +77,7 @@ int main (int argc, char *argv[]) {
 
     gameMode = GAME_MODE_TOP;
     srand(time(NULL)); //preciso que o seed fique aqui
-    initGameMatrix();
+    initGameMatrix("grid");
 
     initRender(argc, argv);
     glutKeyboardFunc(commonKeyPressed);
