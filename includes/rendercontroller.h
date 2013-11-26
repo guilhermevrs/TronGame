@@ -13,5 +13,6 @@
     Initialize Rendercontroller
 */
 void initRender(int argc, char *argv[]);
+void renderMatrix();
 
 #endif

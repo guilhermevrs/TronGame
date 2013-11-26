@@ -124,18 +124,7 @@ void initGameMatrix(char* nomeArquivo)
             globalMatrix[i][j] = GAME_SPACE;
         }
     }
-    mainPlayer.position.x = 0;
-    mainPlayer.position.y = 0;
-	enemy1.position.x = 30;
-	enemy1.position.y = 30;
-	enemy2.position.x = 40;
-	enemy2.position.y = 10;
-    mainPlayer.direction = DIRECTION_RIGHT;
-	enemy1.direction = DIRECTION_RIGHT;
-	enemy2.direction = DIRECTION_RIGHT;    
-	globalMatrix[0][0] = GAME_PLAYER;
-	globalMatrix[30][30] = GAME_ENEMY_1;
-	globalMatrix[50][10] = GAME_ENEMY_2;
+
 
     for (i = 12; i < 20; ++i)
     {
@@ -156,14 +145,14 @@ void initGameMatrix(char* nomeArquivo)
     int i=0, j=0;
     if( file == NULL ){
         printf("Impossible to open the file !\n");
-        return 0;
+        exit(0);
     }
 
     
     while(!feof(file))
     {
         pixelzinho = getc(file);
-        if(pixelzinho != "\n"){
+        if(pixelzinho != '\n'){
             if(pixelzinho != '1')
                 globalMatrix[i][j] = GAME_SPACE;
             else
@@ -171,10 +160,26 @@ void initGameMatrix(char* nomeArquivo)
             j++;
         }
         else
+        {
+            j=0;
             i++;
+        }
     }
     
     fclose(file);
+
+    mainPlayer.position.x = 1;
+    mainPlayer.position.y = 0;
+    enemy1.position.x = 20;
+    enemy1.position.y = 20;
+    enemy2.position.x = 40;
+    enemy2.position.y = 0;
+    mainPlayer.direction = DIRECTION_RIGHT;
+    enemy1.direction = DIRECTION_RIGHT;
+    enemy2.direction = DIRECTION_DOWN;    
+    globalMatrix[1][0] = GAME_PLAYER;
+    globalMatrix[20][20] = GAME_ENEMY_1;
+    globalMatrix[40][0] = GAME_ENEMY_2;
 }
 
 /*

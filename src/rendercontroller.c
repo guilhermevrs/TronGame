@@ -10,6 +10,7 @@ GLfloat aspect;
 GLuint textureWallID;
 GLuint textureTrailID;
 GLuint textureFloorID;
+GLuint textureBikeID;
 
 float linhaInc = WORLD_SIDE/((float)SCENE_HEIGHT);
 float colunaInc = WORLD_SIDE/((float)SCENE_WIDTH);
@@ -23,7 +24,7 @@ void renderObj(float linha, float coluna, char* nomeArquivo)
     FILE * file = fopen(nomeArquivo, "r");
     if( file == NULL ){
         printf("Impossible to open the file !\n");
-        return 0;
+        exit(0);
     }
 
     glPushMatrix();
@@ -76,6 +77,7 @@ void renderObj(float linha, float coluna, char* nomeArquivo)
         }
     }
     fclose(file);
+    
     glPopMatrix();
 }
 
@@ -88,7 +90,7 @@ void renderObj2(float linha, float coluna, char* nomeArquivo, Player enemy)
     FILE * file = fopen(nomeArquivo, "r");
     if( file == NULL ){
         printf("Impossible to open the file !\n");
-        return 0;
+        exit(0);
     }
 
     glPushMatrix();
@@ -150,7 +152,6 @@ void renderObj2(float linha, float coluna, char* nomeArquivo, Player enemy)
 void display() {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     renderMatrix();
-
     glFlush();
     glutSwapBuffers();
 }
@@ -489,7 +490,7 @@ void renderMatrix()
             posColuna = translateColumn(coluna);
 
             if(globalMatrix[linha][coluna] == GAME_WALL) //IS WALL?
-                renderWall(posLinha, posColuna);
+                renderWall(posLinha,posColuna);
              else if(globalMatrix[linha][coluna] == GAME_PLAYER) //IS PLAYER?
                 renderPlayer(posLinha, posColuna);
 			 else if(globalMatrix[linha][coluna] == GAME_ENEMY_1) //IS ENEMY?
@@ -539,6 +540,7 @@ void initRender(int argc, char *argv[])
     textureWallID = loadBMP_custom("models/textures/wall-texture.bmp");
     textureTrailID = loadBMP_custom("models/textures/trail-texture.bmp");
     textureFloorID = loadBMP_custom("models/textures/floor-texture.bmp");
+    textureBikeID = loadBMP_custom("models/textures/wall-texture.bmp");
 
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glShadeModel (GL_SMOOTH);
@@ -555,5 +557,4 @@ void initRender(int argc, char *argv[])
     glutReshapeFunc(reshape);
 
     animateGame(0);
-
 }
