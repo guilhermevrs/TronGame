@@ -10,7 +10,8 @@ GLfloat aspect;
 GLuint textureWallID;
 GLuint textureTrailID;
 GLuint textureFloorID;
-GLuint textureBikeID;
+GLuint textureBikeBlueID;
+GLuint textureBikeRedID;
 
 float linhaInc = WORLD_SIDE/((float)SCENE_HEIGHT);
 float colunaInc = WORLD_SIDE/((float)SCENE_WIDTH);
@@ -220,7 +221,7 @@ void renderWall(float linha, float coluna)
 void renderPlayer(float linha, float coluna)
 {
 
-    loadBike(mainPlayer.direction, "models/TronBike/TronBike.obj", linha, coluna);
+    loadBike(mainPlayer.direction, "models/TronBike/TronBike.obj", linha, coluna, textureBikeBlueID);
 
 }
 
@@ -231,7 +232,7 @@ void renderPlayer(float linha, float coluna)
 */
 void renderEnemy(float linha, float coluna, Player enemy)
 {
-    loadBike(enemy.direction, "models/TronBike/TronBike.obj", linha, coluna);
+    loadBike(enemy.direction, "models/TronBike/TronBike.obj", linha, coluna, textureBikeRedID);
 }
 
 void renderTrail(float linha, float coluna)
@@ -414,7 +415,8 @@ void initRender(int argc, char *argv[])
     textureWallID = loadBMP_custom("models/textures/wall-texture.bmp");
     textureTrailID = loadBMP_custom("models/textures/trail-texture.bmp");
     textureFloorID = loadBMP_custom("models/textures/floor-texture.bmp");
-    textureBikeID = loadBMP_custom("models/textures/wall-texture.bmp");
+    textureBikeBlueID = loadBMP_custom("models/TronBike/bike blue.bmp");
+    textureBikeRedID = loadBMP_custom("models/TronBike/bike red.bmp");
 
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glShadeModel (GL_SMOOTH);

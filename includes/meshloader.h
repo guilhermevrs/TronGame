@@ -13,9 +13,14 @@ typedef struct{
     float z;
 } Vertex3D;
 
+typedef struct{
+    float x;
+    float y;
+} Vertex2D;
+
 /*
 Loads the bike
 */
-void loadBike(unsigned char direction, char* nomeArquivo, float linha, float coluna);
+void loadBike(unsigned char direction, char* nomeArquivo, float linha, float coluna, GLuint textureID);
 
 #endif
