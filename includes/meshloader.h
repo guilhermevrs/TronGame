@@ -1,5 +1,8 @@
-#include <stdio.h>
+#ifndef MESHLOADER_H
 
+#define MESHLOADER_H 0
+#include <stdio.h>
+#include "defines.h"
 #include <GL/glut.h> // OpenGL Utility Toolkit - for using the Windowing system
 #include <GL/gl.h> // OpenGL - for rendering 3D graphics
 #include <GL/glu.h> // OpenGL Utility Library - extra features built atop of GL
@@ -10,4 +13,9 @@ typedef struct{
     float z;
 } Vertex3D;
 
-Vertex3D* loadBirosca();
+/*
+Loads the bike
+*/
+void loadBike(unsigned char direction, char* nomeArquivo, float linha, float coluna);
+
+#endif
