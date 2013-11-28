@@ -24,9 +24,10 @@ void display() {
 
 
 	glClear (GL_DEPTH_BUFFER_BIT);
-	glScissor(100,0,650,450); 
-    glEnable(GL_SCISSOR_TEST); 
-    glViewport(100,-50, 600, 500);
+	glScissor(200,0,600,450); 
+    glEnable(GL_SCISSOR_TEST);
+    //set3rdVision(); 
+    glViewport(200,0, 600, 450);
     renderMatrix();
     glDisable(GL_SCISSOR_TEST); 
     //glutSwapBuffers();
@@ -35,13 +36,13 @@ void display() {
     glEnable(GL_SCISSOR_TEST);
     glScissor(-50,250,250,250); 
 	setTopVision();
-    glViewport(-50,250, 240, 240);
+    glViewport(-50,250, 300, 300);
 	renderMatrix();
 	glDisable(GL_SCISSOR_TEST); 
 	glutSwapBuffers();
     
 
-	glFlush();
+	//glFlush();
 }
 
 /*
@@ -425,7 +426,7 @@ void initRender(int argc, char *argv[])
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize (640, 480);
+    glutInitWindowSize (800, 600);
     glutCreateWindow ("TronGame");
 
     glEnable (GL_TEXTURE_2D);
