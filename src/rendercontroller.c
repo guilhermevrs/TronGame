@@ -20,10 +20,28 @@ float colunaInc = WORLD_SIDE/((float)SCENE_WIDTH);
     Display function for opengl
 */
 void display() {
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   	//glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+	glClear (GL_DEPTH_BUFFER_BIT);
+	glScissor(100,0,650,450); 
+    glEnable(GL_SCISSOR_TEST); 
+    glViewport(100,-50, 600, 500);
     renderMatrix();
-    glFlush();
-    glutSwapBuffers();
+    glDisable(GL_SCISSOR_TEST); 
+    //glutSwapBuffers();
+
+   	glClear (GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(-50,250,250,250); 
+	setTopVision();
+    glViewport(-50,250, 240, 240);
+	renderMatrix();
+	glDisable(GL_SCISSOR_TEST); 
+	glutSwapBuffers();
+    
+
+	glFlush();
 }
 
 /*
@@ -108,8 +126,8 @@ void setVisionParameters()
 void reshape(GLsizei w, GLsizei h) {
     if ( h == 0 ) h = 1;
 
+    glViewport(150, 0, 550, 450);
     glViewport(0, 0, w, h);
-
     aspect = (GLfloat)w/(GLfloat)h;
 
     setVisionParameters();
