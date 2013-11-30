@@ -23,26 +23,31 @@ void display() {
    	//glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-	glClear (GL_DEPTH_BUFFER_BIT);
-	glScissor(200,0,600,450); 
+    glClear (GL_DEPTH_BUFFER_BIT);
+    glScissor(200,0,600,450);
     glEnable(GL_SCISSOR_TEST);
-    //set3rdVision(); 
+    //set3rdVision();
     glViewport(200,0, 600, 450);
     renderMatrix();
-    glDisable(GL_SCISSOR_TEST); 
+    glDisable(GL_SCISSOR_TEST);
     //glutSwapBuffers();
 
-   	glClear (GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_SCISSOR_TEST);
-    glScissor(-50,250,250,250); 
-	setTopVision();
-    glViewport(-50,250, 300, 300);
-	renderMatrix();
-	glDisable(GL_SCISSOR_TEST); 
-	glutSwapBuffers();
-    
+        glClear (GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_SCISSOR_TEST);
+        glScissor(-50,250,250,250);
+        setTopVision();
+        glViewport(-50,250, 300, 300);
+    if(gameMode == GAME_MODE_3D)
+    {
+        renderMatrix();
+    }
+    else
+    {
+        clearViewport();
+    }
+    glDisable(GL_SCISSOR_TEST);
+    glutSwapBuffers();
 
-	//glFlush();
 }
 
 /*
@@ -344,6 +349,13 @@ void renderTrail(float linha, float coluna)
     glEnd();
 
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void clearViewport()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+    glColor3f(0,0,0);
+    glClearColor (0.0, 0.0, 0.0, 0.0);
 }
 
 /*

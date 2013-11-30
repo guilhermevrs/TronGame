@@ -117,14 +117,14 @@ void initGameMatrix(char* nomeArquivo)
 {
 
     FILE * file = fopen(nomeArquivo, "r");
-    char pixelzinho; 
+    char pixelzinho;
     int i=0, j=0;
     if( file == NULL ){
         printf("Impossible to open the file !\n");
         exit(0);
     }
 
-    
+
     while(!feof(file))
     {
         pixelzinho = getc(file);
@@ -141,7 +141,7 @@ void initGameMatrix(char* nomeArquivo)
             i++;
         }
     }
-    
+
     fclose(file);
 
     mainPlayer.position.x = 1;
@@ -155,7 +155,7 @@ void initGameMatrix(char* nomeArquivo)
     enemy2.direction = DIRECTION_DOWN;
     mainPlayer.state = PLAYER_ALIVE;
     enemy1.state = PLAYER_ALIVE;
-    enemy2.state = PLAYER_ALIVE;    
+    enemy2.state = PLAYER_ALIVE;
     globalMatrix[1][0] = GAME_PLAYER;
     globalMatrix[20][20] = GAME_ENEMY_1;
     globalMatrix[40][0] = GAME_ENEMY_2;
@@ -179,7 +179,7 @@ int isStepOk(Player thisPlayer)
         case GAME_ENEMY_2:
             result = STEP_COLLISION;
         break;
-       
+
         case GAME_TRAIL:{
             result = STEP_COLLISION;
         }
@@ -271,7 +271,7 @@ void IAofEnemy(Player *enemy)
             }
             break;
         }
-        
+
         incrementElementPosition(&(enemy->position), enemy->direction);
     }
     else
@@ -318,7 +318,7 @@ int verifyIfPlayerWon(int playerStep)
         if((enemy1.state == PLAYER_DEAD) && (enemy2.state == PLAYER_DEAD))
             retorno = PLAYER_WON;
         else
-            retorno = STEP_OK;        
+            retorno = STEP_OK;
     else
         retorno = GAME_OVER;
 
