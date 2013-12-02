@@ -18,6 +18,23 @@ unsigned char gameMode;
 
 
 void commonKeyPressed (unsigned char key, int x, int y) {
+    switch (key)
+    {
+        case 'v': case 'V':
+            switch(gameMode)
+            {
+                case GAME_MODE_TOP: gameMode = GAME_MODE_3D;break;
+                case GAME_MODE_3D: gameMode = GAME_MODE_FP;break;
+                case GAME_MODE_FP: gameMode = GAME_MODE_TOP;break;
+            }
+        break;
+        case 's': case 'S': stopGame = 1; break;
+        case 'n': case 'N':
+            stopGame = 0;
+            break;
+        default:
+            stopGame = 0;
+    }
     if(key == 'v' || key == 'V')
     {
         switch(gameMode)
@@ -27,12 +44,12 @@ void commonKeyPressed (unsigned char key, int x, int y) {
             case GAME_MODE_FP: gameMode = GAME_MODE_TOP;break;
         }
     }
+    else if(key == 's' || key == 'S')
+            stopGame = 1;
     else
     {
-        if(key == 's' || key == 'S')
-            stopGame = 1;
-        else
             stopGame = 0;
+
     }
 }
 
