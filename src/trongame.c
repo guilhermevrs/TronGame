@@ -20,10 +20,12 @@ unsigned char gameMode;
 void commonKeyPressed (unsigned char key, int x, int y) {
     if(key == 'v' || key == 'V')
     {
-        if(gameMode == GAME_MODE_TOP)
-            gameMode = GAME_MODE_3D;
-        else
-            gameMode = GAME_MODE_TOP;
+        switch(gameMode)
+        {
+            case GAME_MODE_TOP: gameMode = GAME_MODE_3D;break;
+            case GAME_MODE_3D: gameMode = GAME_MODE_FP;break;
+            case GAME_MODE_FP: gameMode = GAME_MODE_TOP;break;
+        }
     }
     else
     {

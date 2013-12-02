@@ -50,9 +50,11 @@
 //Game modes
 #define GAME_MODE_TOP 0
 #define GAME_MODE_3D 1
+#define GAME_MODE_FP 2
 
 //Camera paramenters
 #define CAMERA_3RD_DISTANCE 10.0f
 #define CAMERA_TOP_DISTANCE 390.0f
+
 
 #endif

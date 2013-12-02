@@ -37,7 +37,7 @@ void display() {
         glScissor(-50,250,300,275);
         setTopVision();
         glViewport(-50,250, 300, 275);
-    if(gameMode == GAME_MODE_3D)
+    if(gameMode != GAME_MODE_TOP)
     {
         renderMatrix();
     }
@@ -85,18 +85,38 @@ void set3rdVision()
         default:
             posXCamera = posLine - CAMERA_3RD_DISTANCE;
             posZCamera = posColumn;
+            if(gameMode == GAME_MODE_FP)
+            {
+                posXCamera += 20;
+                posLine += 20;
+            }
         break;
         case DIRECTION_DOWN:
             posXCamera = posLine;
             posZCamera = posColumn - CAMERA_3RD_DISTANCE;
+            if(gameMode == GAME_MODE_FP)
+            {
+                posZCamera += 20;
+                posColumn += 20;
+            }
         break;
         case DIRECTION_LEFT:
             posXCamera = posLine + CAMERA_3RD_DISTANCE;
             posZCamera = posColumn;
+            if(gameMode == GAME_MODE_FP)
+            {
+                posXCamera -= 20;
+                posLine -= 20;
+            }
         break;
         case DIRECTION_UP:
             posXCamera = posLine;
             posZCamera = posColumn + CAMERA_3RD_DISTANCE;
+            if(gameMode == GAME_MODE_FP)
+            {
+                posZCamera -= 20;
+                posColumn -= 20;
+            }
         break;
     }
 
@@ -411,7 +431,7 @@ void animateGame(int a)
     int gameIsOver = 0;
     if(stopGame != 1)
         gameIsOver = gameStep();
-    if(gameMode == GAME_MODE_3D)
+    if(gameMode != GAME_MODE_TOP)
         set3rdVision();
     else
         setTopVision();
