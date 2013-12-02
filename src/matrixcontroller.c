@@ -253,7 +253,10 @@ void IAofEnemy(Player *enemy)
                     else
                         if(globalMatrix[enemy->position.x][enemy->position.y-1] == GAME_SPACE)
                             enemy->direction = DIRECTION_UP;
-                        else enemy->state = PLAYER_DEAD;
+                        else{
+                            enemy->state = PLAYER_DEAD;
+                            printf("\n Inimigo morreu \a\n");
+                        }
             }
             break;
             case DIRECTION_VERTICAL:
@@ -267,7 +270,10 @@ void IAofEnemy(Player *enemy)
                     else
                         if(globalMatrix[enemy->position.x-1][enemy->position.y] == GAME_SPACE)
                             enemy->direction = DIRECTION_LEFT;
-                        else enemy->state = PLAYER_DEAD;
+                        else{
+                            enemy->state = PLAYER_DEAD;
+                            printf("\n Inimigo morreu \a\n");
+                        }
             }
             break;
         }

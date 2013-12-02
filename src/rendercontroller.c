@@ -34,9 +34,9 @@ void display() {
 
         glClear (GL_DEPTH_BUFFER_BIT);
         glEnable(GL_SCISSOR_TEST);
-        glScissor(-50,250,250,250);
+        glScissor(-50,250,300,275);
         setTopVision();
-        glViewport(-50,250, 300, 300);
+        glViewport(-50,250, 300, 275);
     if(gameMode == GAME_MODE_3D)
     {
         renderMatrix();
